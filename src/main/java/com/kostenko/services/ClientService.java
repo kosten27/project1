@@ -6,7 +6,8 @@ public interface ClientService {
      * add documentaition
      */
     void createClient(String name, String surname, String phone);
-    void deleteClient();
-
+    void modifyClient(long id, String newName, String newSurname, String newPhone);
+    void deleteClient(long id);
+    void showClients();
 
 }

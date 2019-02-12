@@ -4,6 +4,11 @@ public class Client {
     private long id;
     private String name;
     private String surname;
+
+    public Client(long id) {
+        this.id = id;
+    }
+
     private int age;
     private String email;
     private String phone;
