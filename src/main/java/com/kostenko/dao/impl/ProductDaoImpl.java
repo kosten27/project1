@@ -20,9 +20,9 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public Product[] getProducts() {
+    public List<Product> getProducts() {
         System.out.println("Getting products.... Please wait");
-        Product[] products = new Product[10];
+        List<Product> products = new ArrayList<>();
         return products;
     }
 }

@@ -6,6 +6,7 @@ import com.kostenko.domain.Product;
 import com.kostenko.services.ProductService;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
     private final ProductDao productDao = new ProductDaoImpl();
@@ -41,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void showProducts() {
-        Product[] products = productDao.getProducts();
+        List<Product> products = productDao.getProducts();
         for (Product product: products) {
             System.out.println(product);
         }

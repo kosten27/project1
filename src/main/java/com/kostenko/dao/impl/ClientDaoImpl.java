@@ -3,6 +3,9 @@ package com.kostenko.dao.impl;
 import com.kostenko.dao.ClientDao;
 import com.kostenko.domain.Client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ClientDaoImpl implements ClientDao {
 
     @Override
@@ -18,9 +21,9 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Client[] getClients() {
+    public List<Client> getClients() {
         System.out.println("Getting clients.... Please wait");
-        Client[] clients = new Client[10];
+        List<Client> clients = new ArrayList<>();
         return clients;
     }
 }

@@ -4,6 +4,8 @@ import com.kostenko.dao.impl.ClientDaoImpl;
 import com.kostenko.domain.Client;
 import com.kostenko.services.ClientService;
 
+import java.util.List;
+
 public class ClientServiceImpl implements ClientService {
 
     private ClientDao clientDao = new ClientDaoImpl();
@@ -41,7 +43,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void showClients() {
-        Client[] clients = clientDao.getClients();
+        List<Client> clients = clientDao.getClients();
         for (Client client : clients) {
             System.out.println(client);
         }
