@@ -110,10 +110,10 @@ public class AdminMenu {
         System.out.println("Input name:");
         String name = br.readLine();
         System.out.println("Input surname:");
-        String surmane = br.readLine();
+        String surname = br.readLine();
         System.out.println("Input phone:");
         String phone = br.readLine();
-        clientService.createClient(name, surmane, phone);
+        clientService.createClient(name, surname, phone);
     }
 
     private void showMenu() {
