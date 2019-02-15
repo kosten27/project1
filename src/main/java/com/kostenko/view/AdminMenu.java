@@ -1,8 +1,11 @@
 package com.kostenko.view;
 
+import com.kostenko.domain.Client;
 import com.kostenko.services.ClientService;
+import com.kostenko.services.OrderService;
 import com.kostenko.services.ProductService;
 import com.kostenko.services.impl.ClientServiceImpl;
+import com.kostenko.services.impl.OrderServiceImpl;
 import com.kostenko.services.impl.ProductServiceImpl;
 
 import java.io.BufferedReader;
@@ -11,9 +14,15 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 
 public class AdminMenu {
-    private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    private final ClientService clientService = new ClientServiceImpl();
+    private final BufferedReader br;
+    private final ClientService clientService;
+
     private final ProductService productService = new ProductServiceImpl();
+
+    public AdminMenu(BufferedReader br, ClientService clientService) {
+        this.br = br;
+        this.clientService = clientService;
+    }
 
     public void show() throws IOException {
 
@@ -30,7 +39,7 @@ public class AdminMenu {
                     removeClient();
                     break;
                 case "4":
-                    showClients();
+                    showAllClients();
                     break;
                 case "5":
                     createProduct();
@@ -56,8 +65,10 @@ public class AdminMenu {
         }
     }
 
-    private void showClients() {
-        clientService.showClients();
+    private void showAllClients() {
+        for (Client client : clientService.getAllClients()) {
+            System.out.println(client);
+        }
     }
 
     private void showProducts() {
@@ -113,7 +124,20 @@ public class AdminMenu {
         String surname = br.readLine();
         System.out.println("Input phone:");
         String phone = br.readLine();
-        clientService.createClient(name, surname, phone);
+        System.out.println("Input age:");
+        int age = readInteger();
+        System.out.println("Input email:");
+        String email = br.readLine();
+        clientService.createClient(name, surname, age, email, phone);
+    }
+
+    private int readInteger() {
+        try {
+            return Integer.valueOf(br.readLine());
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Input number please!!");
+            return readInteger();
+        }
     }
 
     private void showMenu() {

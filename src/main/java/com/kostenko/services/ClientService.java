@@ -1,5 +1,9 @@
 package com.kostenko.services;
 
+import com.kostenko.domain.Client;
+
+import java.util.List;
+
 public interface ClientService {
 
     /**
@@ -10,9 +14,11 @@ public interface ClientService {
 
     void createClient(String name, String surname, String phone);
 
+    void createClient(String name, String surname, int age, String email, String phone);
+
     void modifyClient(long id, String newName, String newSurname, String newPhone);
 
     void deleteClient(long id);
 
-    void showClients();
+    List<Client> getAllClients();
 }

@@ -2,21 +2,40 @@ package com.kostenko.services.impl;
 import com.kostenko.dao.ClientDao;
 import com.kostenko.dao.impl.ClientDaoImpl;
 import com.kostenko.domain.Client;
+import com.kostenko.exceptions.BusinessException;
 import com.kostenko.services.ClientService;
+import com.kostenko.validators.ValidationService;
 
 import java.util.List;
 
 public class ClientServiceImpl implements ClientService {
 
-    private ClientDao clientDao = new ClientDaoImpl();
+    private ClientDao clientDao;
+    private ValidationService validationService;
+
+    public ClientServiceImpl(ClientDao clientDao, ValidationService validationService) {
+        this.clientDao = clientDao;
+        this.validationService = validationService;
+    }
 
     @Override
     public void createClient(String name, String surname, String phone) {
 
-        Client client = new Client(name, surname, phone);
-        boolean result = clientDao.saveClient(client);
-        if(result) {
-            System.out.println("Client saved: " + client);
+        createClient(name, surname, 0, null, phone);
+    }
+
+    @Override
+    public void createClient(String name, String surname, int age, String email, String phone) {
+
+        try {
+            validationService.validateAge(age);
+            Client client = new Client(name, surname, age, email, phone);
+            boolean result = clientDao.saveClient(client);
+            if(result) {
+                System.out.println("Client saved: " + client);
+            }
+        } catch (BusinessException e) {
+            e.printStackTrace();
         }
     }
 
@@ -42,10 +61,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void showClients() {
-        List<Client> clients = clientDao.getClients();
-        for (Client client : clients) {
-            System.out.println(client);
-        }
+    public List<Client> getAllClients() {
+        return clientDao.getAllClients();
     }
 }

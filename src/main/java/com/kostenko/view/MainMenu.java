@@ -7,9 +7,15 @@ import java.io.InputStreamReader;
 
 public class MainMenu {
 
-    private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    private final AdminMenu adminMenu = new AdminMenu();
-    private final ClientMenu clientMenu = new ClientMenu();
+    private final BufferedReader br;
+    private final AdminMenu adminMenu;
+    private final ClientMenu clientMenu;
+
+    public MainMenu(BufferedReader br, AdminMenu adminMenu, ClientMenu clientMenu) {
+        this.br = br;
+        this.adminMenu = adminMenu;
+        this.clientMenu = clientMenu;
+    }
 
     public void showMenu() throws IOException {
 

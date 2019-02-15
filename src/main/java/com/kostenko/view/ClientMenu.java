@@ -1,6 +1,8 @@
 package com.kostenko.view;
 
+import com.kostenko.services.ClientService;
 import com.kostenko.services.OrderService;
+import com.kostenko.services.impl.ClientServiceImpl;
 import com.kostenko.services.impl.OrderServiceImpl;
 
 import java.io.BufferedReader;
@@ -9,9 +11,15 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class ClientMenu {
-    private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private final BufferedReader br;
     private long clientId;
     private final OrderService orderService = new OrderServiceImpl();
+    private final ClientService clientService;
+
+    public ClientMenu(BufferedReader br, ClientService clientService) {
+        this.br = br;
+        this.clientService = clientService;
+    }
 
     public void show() throws IOException {
         boolean isRuning = true;
@@ -33,15 +41,44 @@ public class ClientMenu {
                     showOrders();
                     break;
                 case "5":
-                    isRuning = false;
+                    register();
                     break;
                 case "6":
+                    System.out.println("Remove");
+                    break;
+                case "9":
+                    isRuning = false;
+                    break;
+                case "10":
                     System.exit(0);
                     break;
                 default:
                     System.out.println("Wrong input");
                     break;
             }
+        }
+    }
+
+    private void register() throws IOException {
+        System.out.println("Input name:");
+        String name = br.readLine();
+        System.out.println("Input surname:");
+        String surname = br.readLine();
+        System.out.println("Input phone:");
+        String phone = br.readLine();
+        System.out.println("Input age:");
+        int age = readInteger();
+        System.out.println("Input email:");
+        String email = br.readLine();
+        clientService.createClient(name, surname, age, email, phone);
+    }
+
+    private int readInteger() {
+        try {
+            return Integer.valueOf(br.readLine());
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Input number please!!");
+            return readInteger();
         }
     }
 
@@ -106,7 +143,9 @@ public class ClientMenu {
         System.out.println("2. Modify order");
         System.out.println("3. Remove order");
         System.out.println("4. List all order");
-        System.out.println("5. Return");
-        System.out.println("6. Exit");
+        System.out.println("5. Register");
+        System.out.println("6. Remove");
+        System.out.println("9. Return");
+        System.out.println("10. Exit");
     }
 }
