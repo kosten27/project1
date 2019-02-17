@@ -21,6 +21,10 @@ public class Order {
         this.products = products;
     }
 
+    public Order(long id) {
+        this.id = id;
+    }
+
     public Order(long id, Client client) {
         this.id = id;
         this.client = client;

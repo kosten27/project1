@@ -11,7 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
-    private final OrderDao orderDao = new OrderDaoImpl();
+    private final OrderDao orderDao;
+
+    public OrderServiceImpl(OrderDao orderDao) {
+        this.orderDao = orderDao;
+    }
 
     @Override
     public void createOrder(long clientId, List<Long> productsId) {
@@ -43,12 +47,30 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void deleteOrder(long orderId) {
+        Order order = new Order(orderId);
+        boolean result = orderDao.deleteOrder(order);
+        if(result) {
+            System.out.println("Order deleted: " + order);
+        }
+    }
+
+    @Override
     public void deleteOrder(long orderId, long clientId) {
         Client client = new Client(clientId);
         Order order = new Order(orderId, client);
         boolean result = orderDao.deleteOrder(order);
         if(result) {
             System.out.println("Order deleted: " + order);
+        }
+    }
+
+    @Override
+    public void showOrders() {
+        List<Order> orders = orderDao.getOrders();
+        System.out.println("List all orders:");
+        for (Order order : orders) {
+            System.out.println(order);
         }
     }
 

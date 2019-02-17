@@ -17,4 +17,6 @@ public interface ClientDao {
     boolean deleteClient(Client client);
 
     List<Client> getAllClients();
+
+    boolean phoneUsed(String phone);
 }

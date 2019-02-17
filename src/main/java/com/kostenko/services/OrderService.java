@@ -14,7 +14,11 @@ public interface OrderService {
 
     void modifyOrder(long orderId, long clientId, List<Long> productsId);
 
+    void deleteOrder(long orderId);
+
     void deleteOrder(long orderId, long clientId);
+
+    void showOrders();
 
     void showOrders(long clientId);
 }

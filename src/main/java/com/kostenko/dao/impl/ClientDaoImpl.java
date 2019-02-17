@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class ClientDaoImpl implements ClientDao {
 
-    private static ClientDao clientDao = new ClientDaoImpl();
+    private static ClientDao clientDao;
 
     private Map<Long, Client> map = new HashMap<>();
     private static long generator = 0;
@@ -39,7 +39,24 @@ public class ClientDaoImpl implements ClientDao {
         return new ArrayList<>(map.values());
     }
 
+    @Override
+    public boolean phoneUsed(String phone) {
+        for (Map.Entry<Long, Client> entry : map.entrySet()) {
+            if (entry.getValue().getPhone().equals(phone)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static ClientDao getInstance() {
+        if(clientDao == null) {
+            synchronized(ClientDaoImpl.class) {
+                if(clientDao == null) {
+                    clientDao = new ClientDaoImpl();
+                }
+            }
+        }
         return clientDao;
     }
 

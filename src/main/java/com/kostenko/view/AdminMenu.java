@@ -4,24 +4,25 @@ import com.kostenko.domain.Client;
 import com.kostenko.services.ClientService;
 import com.kostenko.services.OrderService;
 import com.kostenko.services.ProductService;
-import com.kostenko.services.impl.ClientServiceImpl;
-import com.kostenko.services.impl.OrderServiceImpl;
 import com.kostenko.services.impl.ProductServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 public class AdminMenu {
     private final BufferedReader br;
     private final ClientService clientService;
+    private final OrderService orderService;
 
-    private final ProductService productService = new ProductServiceImpl();
+    private final ProductService productService;
 
-    public AdminMenu(BufferedReader br, ClientService clientService) {
+    public AdminMenu(BufferedReader br, ClientService clientService, ProductService productService, OrderService orderService) {
         this.br = br;
         this.clientService = clientService;
+        this.orderService = orderService;
+        this.productService = productService;
     }
 
     public void show() throws IOException {
@@ -54,13 +55,58 @@ public class AdminMenu {
                     showProducts();
                     break;
                 case "9":
-                    return;
+                    modifyOrder();
+                    break;
                 case "10":
+                    removeOrder();
+                    break;
+                case "11":
+                    showOrders();
+                    break;
+                case "R":
+                    return;
+                case "E":
                     System.exit(0);
                     break;
                 default:
                     System.out.println("Wrong input");
                     break;
+            }
+        }
+    }
+
+    private void showOrders() {
+        orderService.showOrders();
+    }
+
+    private void removeOrder() throws IOException {
+        System.out.println("Input order id:");
+        long orderId = Long.valueOf(br.readLine());
+        orderService.deleteOrder(orderId);
+    }
+
+    private void modifyOrder() throws IOException {
+        boolean isRuning = false;
+        System.out.println("Input order id:");
+        long orderId = Long.valueOf(br.readLine());
+        System.out.println("Input id of new client:");
+        long clientId = Long.valueOf(br.readLine());
+        ArrayList<Long> productsId = new ArrayList<>();
+        while (isRuning) {
+
+            System.out.println("1. Add product");
+            System.out.println("2. Save order");
+            switch (br.readLine()) {
+                case "1":
+                    System.out.println("Input product id:");
+                    productsId.add(Long.valueOf(br.readLine()));
+                    break;
+                case "2":
+                    orderService.createOrder(clientId, productsId);
+                    isRuning = false;
+                    break;
+                default:
+                    System.out.println("Wrong input");
             }
         }
     }
@@ -149,7 +195,10 @@ public class AdminMenu {
         System.out.println("6. Modify product");
         System.out.println("7. Remove product");
         System.out.println("8. List all products");
-        System.out.println("9. Return");
-        System.out.println("10. Exit");
+        System.out.println("9. Modify order");
+        System.out.println("10. Remove order");
+        System.out.println("11. List all orders");
+        System.out.println("R. Return");
+        System.out.println("E. Exit");
     }
 }

@@ -29,6 +29,9 @@ public class ClientServiceImpl implements ClientService {
 
         try {
             validationService.validateAge(age);
+            validationService.validateEmail(email);
+            validationService.validatePhone(phone);
+            validationService.validatePhoneUsed(clientDao, phone);
             Client client = new Client(name, surname, age, email, phone);
             boolean result = clientDao.saveClient(client);
             if(result) {

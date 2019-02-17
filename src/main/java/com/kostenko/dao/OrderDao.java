@@ -17,5 +17,7 @@ public interface OrderDao {
 
     boolean deleteOrder(Order order);
 
+    List<Order> getOrders();
+
     List<Order> getOrders(Client client);
 }
