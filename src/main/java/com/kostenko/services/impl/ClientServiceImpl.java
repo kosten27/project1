@@ -1,6 +1,5 @@
 package com.kostenko.services.impl;
 import com.kostenko.dao.ClientDao;
-import com.kostenko.dao.impl.ClientDaoImpl;
 import com.kostenko.domain.Client;
 import com.kostenko.exceptions.BusinessException;
 import com.kostenko.services.ClientService;
@@ -25,7 +24,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void createClient(String name, String surname, int age, String email, String phone) {
+    public long createClient(String name, String surname, int age, String email, String phone) {
 
         try {
             validationService.validateAge(age);
@@ -36,6 +35,42 @@ public class ClientServiceImpl implements ClientService {
             boolean result = clientDao.saveClient(client);
             if(result) {
                 System.out.println("Client saved: " + client);
+                return client.getId();
+            }
+        } catch (BusinessException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public void modifyClient(long clientId, String name, String surname, int age, String email, String phone) {
+
+        try {
+            validationService.validateClientExists(clientDao, clientId);
+            Client client = clientDao.getClient(clientId);
+            client.setName(name);
+            client.setSurname(surname);
+            if (!(client.getAge() == age)) {
+
+                validationService.validateAge(age);
+                client.setAge(age);
+            }
+            if (!client.getEmail().equals(email)) {
+
+                validationService.validateEmail(email);
+                client.setEmail(email);
+            }
+            if (!client.getPhone().equals(phone)) {
+
+                validationService.validatePhone(phone);
+                validationService.validatePhoneUsed(clientDao, phone);
+                client.setPhone(phone);
+            }
+
+            boolean result = clientDao.updateClient(client);
+            if (result) {
+                System.out.println("Modify client: " + client);
             }
         } catch (BusinessException e) {
             e.printStackTrace();
@@ -43,23 +78,17 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void modifyClient(long id, String newName, String newSurname, String newPhone) {
-        Client client = new Client(id);
-        client.setName(newName);
-        client.setSurname(newSurname);
-        client.setPhone(newPhone);
-        boolean result = clientDao.saveClient(client);
-        if(result) {
-            System.out.println("Modify client: " + client);
-        }
-    }
+    public void deleteClient(long clientId) {
 
-    @Override
-    public void deleteClient(long id) {
-        Client client = new Client(id);
-        boolean result = clientDao.deleteClient(client);
-        if(result) {
-            System.out.println("Delete client: " + client);
+        try {
+            validationService.validateClientExists(clientDao, clientId);
+            Client client = new Client(clientId);
+            boolean result = clientDao.deleteClient(client);
+            if(result) {
+                System.out.println("Delete client: " + client);
+            }
+        } catch (BusinessException e) {
+            e.printStackTrace();
         }
     }
 

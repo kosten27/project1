@@ -153,14 +153,18 @@ public class AdminMenu {
 
     private void modifyClient() throws IOException {
         System.out.println("Input id:");
-        long id = Long.valueOf(br.readLine());
+        long clientId = Long.valueOf(br.readLine());
         System.out.println("Input new name:");
-        String newName = br.readLine();
+        String name = br.readLine();
         System.out.println("Input new surname:");
-        String newSurname = br.readLine();
+        String surname = br.readLine();
+        System.out.println("Input new age:");
+        int age = readInteger();
+        System.out.println("Input new email:");
+        String email = br.readLine();
         System.out.println("Input new phone:");
-        String newPhone = br.readLine();
-        clientService.modifyClient(id, newName, newSurname, newPhone);
+        String phone = br.readLine();
+        clientService.modifyClient(clientId, name, surname, age, email, phone);
     }
 
     private void createClient() throws IOException {

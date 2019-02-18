@@ -14,11 +14,11 @@ public interface ClientService {
 
     void createClient(String name, String surname, String phone);
 
-    void createClient(String name, String surname, int age, String email, String phone);
+    long createClient(String name, String surname, int age, String email, String phone);
 
-    void modifyClient(long id, String newName, String newSurname, String newPhone);
+    void modifyClient(long clientId, String name, String surname, int age, String email, String phone);
 
-    void deleteClient(long id);
+    void deleteClient(long clientId);
 
     List<Client> getAllClients();
 }

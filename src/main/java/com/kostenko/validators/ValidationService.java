@@ -14,4 +14,6 @@ public interface ValidationService {
     void validatePhone(String phone) throws BusinessException;
 
     void validatePhoneUsed(ClientDao clientDao, String phone) throws BusinessException;
+
+    void validateClientExists(ClientDao clientDao, long clientId) throws BusinessException;
 }

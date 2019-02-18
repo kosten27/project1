@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = new Product(id);
         product.setName(newName);
         product.setPrice(newPrice);
-        boolean result = productDao.saveProduct(product);
+        boolean result = productDao.updateProduct(product);
         if(result) {
             System.out.println("Product modified: " + product);
         }
@@ -37,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(long id) {
-        Product product = new Product(id);
+        Product product = productDao.getProduct(id);
         boolean result = productDao.deleteProduct(product);
         if(result) {
             System.out.println("Product deleted: " + product);

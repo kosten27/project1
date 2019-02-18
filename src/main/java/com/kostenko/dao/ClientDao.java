@@ -14,7 +14,11 @@ public interface ClientDao {
 
     boolean saveClient(Client client);
 
+    boolean updateClient(Client client);
+
     boolean deleteClient(Client client);
+
+    Client getClient(long clientId);
 
     List<Client> getAllClients();
 

@@ -28,9 +28,23 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
+    public boolean updateClient(Client client) {
+        System.out.println("Updating client.... Please wait");
+        map.put(client.getId(), client);
+        return true;
+    }
+
+    @Override
     public boolean deleteClient(Client client) {
         System.out.println("Deleting client.... Please wait");
+        map.remove(client.getId());
         return true;
+    }
+
+    @Override
+    public Client getClient(long clientId) {
+        System.out.println("Getting client.... Please wait");
+        return map.get(clientId);
     }
 
     @Override

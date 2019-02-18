@@ -40,4 +40,11 @@ public class ValidationServiceImpl implements ValidationService{
             throw new BusinessException("Phone already used");
         }
     }
+
+    @Override
+    public void validateClientExists(ClientDao clientDao, long clientId) throws BusinessException {
+        if (clientDao.getClient(clientId) == null) {
+            throw new BusinessException("Client not found");
+        }
+    }
 }

@@ -27,24 +27,38 @@ public class ClientMenu {
 
     public void show() throws IOException {
         boolean isRuning = true;
-        System.out.println("Input client id for authorization:");
-        clientId = Long.valueOf(br.readLine());
+        while (isRuning) {
+
+            System.out.println("1. Authorize");
+            System.out.println("2. Register");
+            switch (br.readLine()) {
+                case "1":
+                    authorize();
+                    isRuning = false;
+                    break;
+                case "2":
+                    register();
+                    isRuning = false;
+                    break;
+                default:
+                    System.out.println("Wrong input");
+                    break;
+            }
+        }
+        isRuning = true;
         while (isRuning) {
             showMenu();
             switch (br.readLine()) {
                 case "1":
-                    register();
-                    break;
-                case "2":
                     modify();
                     break;
-                case "3":
+                case "2":
                     showProducts();
                     break;
-                case "4":
+                case "3":
                     createOrder();
                     break;
-                case "5":
+                case "4":
                     showOrders();
                     break;
                 case "R":
@@ -60,18 +74,27 @@ public class ClientMenu {
         }
     }
 
+    private void authorize() throws IOException {
+        System.out.println("Input client id for authorization:");
+        clientId = Long.valueOf(br.readLine());
+    }
+
     private void showProducts() {
         productService.showProducts();
     }
 
     private void modify() throws IOException {
         System.out.println("Input new name:");
-        String newName = br.readLine();
+        String name = br.readLine();
         System.out.println("Input new surname:");
-        String newSurname = br.readLine();
+        String surname = br.readLine();
+        System.out.println("Input new age:");
+        int age = readInteger();
+        System.out.println("Input new email:");
+        String email = br.readLine();
         System.out.println("Input new phone:");
-        String newPhone = br.readLine();
-        clientService.modifyClient(clientId, newName, newSurname, newPhone);
+        String phone = br.readLine();
+        clientService.modifyClient(clientId, name, surname, age, email, phone);
     }
 
     private void register() throws IOException {
@@ -85,7 +108,7 @@ public class ClientMenu {
         int age = readInteger();
         System.out.println("Input email:");
         String email = br.readLine();
-        clientService.createClient(name, surname, age, email, phone);
+        clientId = clientService.createClient(name, surname, age, email, phone);
     }
 
     private int readInteger() {
@@ -124,11 +147,10 @@ public class ClientMenu {
     }
 
     private void showMenu() {
-        System.out.println("1. Register");
-        System.out.println("2. Modify");
-        System.out.println("3. List products");
-        System.out.println("4. Add order");
-        System.out.println("5. List orders");
+        System.out.println("1. Modify");
+        System.out.println("2. List products");
+        System.out.println("3. Add order");
+        System.out.println("4. List orders");
         System.out.println("R. Return");
         System.out.println("E. Exit");
     }
