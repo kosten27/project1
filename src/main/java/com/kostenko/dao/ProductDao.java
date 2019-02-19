@@ -16,7 +16,7 @@ public interface ProductDao {
 
     boolean updateProduct(Product product);
 
-    boolean deleteProduct(Product product);
+    boolean deleteProduct(long productId);
 
     Product getProduct(long id);
 

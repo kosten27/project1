@@ -35,10 +35,14 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public boolean deleteClient(Client client) {
+    public boolean deleteClient(long clientId) {
         System.out.println("Deleting client.... Please wait");
-        map.remove(client.getId());
-        return true;
+        if (map.containsKey(clientId)) {
+            map.remove(clientId);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

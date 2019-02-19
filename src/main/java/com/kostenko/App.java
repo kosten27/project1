@@ -28,10 +28,10 @@ public class App {
         ProductDao productDao = new ProductDaoImpl();
         OrderDao orderDao = new OrderDaoImpl();
 
-        ValidationService validationService = new ValidationServiceImpl();
+        ValidationService validationService = new ValidationServiceImpl(clientDao);
         ClientService clientService = new ClientServiceImpl(clientDao, validationService);
         ProductService productService = new ProductServiceImpl(productDao);
-        OrderService orderService = new OrderServiceImpl(orderDao);
+        OrderService orderService = new OrderServiceImpl(orderDao, clientDao, productDao);
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         AdminMenu adminMenu = new AdminMenu(br, clientService, productService, orderService);

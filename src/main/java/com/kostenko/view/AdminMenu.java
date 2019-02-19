@@ -4,7 +4,6 @@ import com.kostenko.domain.Client;
 import com.kostenko.services.ClientService;
 import com.kostenko.services.OrderService;
 import com.kostenko.services.ProductService;
-import com.kostenko.services.impl.ProductServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,7 +48,7 @@ public class AdminMenu {
                     modifyProduct();
                     break;
                 case "7":
-                    deleteProduct();
+                    removeProduct();
                     break;
                 case "8":
                     showProducts();
@@ -121,7 +120,7 @@ public class AdminMenu {
         productService.showProducts();
     }
 
-    private void deleteProduct() throws IOException {
+    private void removeProduct() throws IOException {
         System.out.println("Input id:");
         long id = Long.valueOf(br.readLine());
         productService.deleteProduct(id);

@@ -16,7 +16,7 @@ public interface ClientDao {
 
     boolean updateClient(Client client);
 
-    boolean deleteClient(Client client);
+    boolean deleteClient(long clientId);
 
     Client getClient(long clientId);
 

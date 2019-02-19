@@ -29,10 +29,14 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public boolean deleteProduct(Product product) {
+    public boolean deleteProduct(long productId) {
         System.out.println("Deleting product.... Please wait");
-        map.remove(product.getId());
-        return true;
+        if (map.containsKey(productId)) {
+            map.remove(productId);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

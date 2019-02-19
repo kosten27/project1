@@ -11,31 +11,59 @@ import java.util.Map;
 
 public class OrderDaoImpl implements OrderDao {
     Map<Long, Order> map = new HashMap<>();
+    long generator = 0;
 
 
     @Override
     public boolean saveOrder(Order order) {
         System.out.println("Saving order.... Please wait");
+        order.setId(generator++);
+        map.put(order.getId(), order);
         return true;
     }
 
     @Override
-    public boolean deleteOrder(Order order) {
+    public boolean deleteOrder(long orderId) {
         System.out.println("Deleting order.... Please wait");
-        return true;
+        if (map.containsKey(orderId)) {
+            map.remove(orderId);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteOrder(long clientId, long orderId) {
+        System.out.println("Deleting order.... Please wait");
+        if (map.containsKey(orderId) && map.get(orderId).getClient().getId() == clientId) {
+            map.remove(orderId);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public Order getOrder(long orderId) {
+        return map.get(orderId);
     }
 
     @Override
     public List<Order> getOrders() {
         System.out.println("Getting orders.... Please wait");
-        List<Order> orders = new ArrayList<>();
-        return orders;
+        return new ArrayList<>(map.values());
     }
 
     @Override
-    public List<Order> getOrders(Client client) {
+    public List<Order> getOrders(long clientId) {
         System.out.println("Getting orders.... Please wait");
         List<Order> orders = new ArrayList<>();
+        for (Map.Entry<Long, Order> entry : map.entrySet()) {
+            if (entry.getValue().getClient().getId() == clientId) {
+                orders.add(entry.getValue());
+            }
+        }
         return orders;
     }
 }

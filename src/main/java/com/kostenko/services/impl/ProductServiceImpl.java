@@ -25,8 +25,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void modifyProduct(long id, String newName, BigDecimal newPrice) {
-        Product product = new Product(id);
+    public void modifyProduct(long productId, String newName, BigDecimal newPrice) {
+        Product product = productDao.getProduct(productId);
         product.setName(newName);
         product.setPrice(newPrice);
         boolean result = productDao.updateProduct(product);
@@ -36,11 +36,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(long id) {
-        Product product = productDao.getProduct(id);
-        boolean result = productDao.deleteProduct(product);
+    public void deleteProduct(long productId) {
+        boolean result = productDao.deleteProduct(productId);
         if(result) {
-            System.out.println("Product deleted: " + product);
+            System.out.println("Deleted product with id: " + productId);
+        } else {
+            System.out.println("Can't delete product with id: " + productId);
         }
     }
 

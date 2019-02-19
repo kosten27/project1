@@ -21,13 +21,12 @@ public class Order {
         this.products = products;
     }
 
-    public Order(long id) {
-        this.id = id;
+    public Order(Client client) {
+        this.client = client;
     }
 
-    public Order(long id, Client client) {
+    public void setId(long id) {
         this.id = id;
-        this.client = client;
     }
 
     public void setClient(Client client) {

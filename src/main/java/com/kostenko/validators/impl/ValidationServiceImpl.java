@@ -9,6 +9,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ValidationServiceImpl implements ValidationService{
+    private final ClientDao clientDao;
+
+    public ValidationServiceImpl(ClientDao clientDao) {
+        this.clientDao = clientDao;
+    }
+
     @Override
     public void validateAge(int age) throws BusinessException {
         if(age < 0 || age > 200) {
@@ -35,16 +41,30 @@ public class ValidationServiceImpl implements ValidationService{
     }
 
     @Override
-    public void validatePhoneUsed(ClientDao clientDao, String phone) throws BusinessException {
+    public void validatePhoneUsed(String phone) throws BusinessException {
         if (clientDao.phoneUsed(phone)) {
             throw new BusinessException("Phone already used");
         }
     }
 
     @Override
-    public void validateClientExists(ClientDao clientDao, long clientId) throws BusinessException {
+    public void validateClientExists(long clientId) throws BusinessException {
         if (clientDao.getClient(clientId) == null) {
             throw new BusinessException("Client not found");
         }
+    }
+
+    @Override
+    public void validateClientField(int age, String email) throws BusinessException {
+        validateAge(age);
+        validateEmail(email);
+    }
+
+    @Override
+    public void validateClientField(int age, String email, String phone) throws BusinessException {
+        validateAge(age);
+        validateEmail(email);
+        validatePhone(phone);
+        validatePhoneUsed(phone);
     }
 }

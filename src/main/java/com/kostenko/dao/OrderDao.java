@@ -15,9 +15,13 @@ public interface OrderDao {
 
     boolean saveOrder(Order order);
 
-    boolean deleteOrder(Order order);
+    boolean deleteOrder(long orderId);
+
+    boolean deleteOrder(long clientId, long orderId);
+
+    Order getOrder(long orderId);
 
     List<Order> getOrders();
 
-    List<Order> getOrders(Client client);
+    List<Order> getOrders(long clientId);
 }

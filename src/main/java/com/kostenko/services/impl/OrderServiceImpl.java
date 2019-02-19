@@ -1,6 +1,8 @@
 package com.kostenko.services.impl;
 
+import com.kostenko.dao.ClientDao;
 import com.kostenko.dao.OrderDao;
+import com.kostenko.dao.ProductDao;
 import com.kostenko.dao.impl.OrderDaoImpl;
 import com.kostenko.domain.Client;
 import com.kostenko.domain.Order;
@@ -12,17 +14,21 @@ import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
     private final OrderDao orderDao;
+    private final ClientDao clientDao;
+    private final ProductDao productDao;
 
-    public OrderServiceImpl(OrderDao orderDao) {
+    public OrderServiceImpl(OrderDao orderDao, ClientDao clientDao, ProductDao productDao) {
         this.orderDao = orderDao;
+        this.clientDao = clientDao;
+        this.productDao = productDao;
     }
 
     @Override
     public void createOrder(long clientId, List<Long> productsId) {
-        Client client = new Client(clientId);
+        Client client = clientDao.getClient(clientId);
         List<Product> products = new ArrayList<>();
-        for (long id: productsId) {
-            products.add(new Product(id));
+        for (long productId: productsId) {
+            products.add(productDao.getProduct(productId));
         }
         Order order = new Order(client, products);
         boolean result = orderDao.saveOrder(order);
@@ -33,12 +39,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void modifyOrder(long orderId, long clientId, List<Long> productsId) {
-        Client client = new Client(clientId);
+        Order order = orderDao.getOrder(orderId);
+        Client client = clientDao.getClient(clientId);
+        order.setClient(client);
         List<Product> products = new ArrayList<>();
-        for (long id: productsId) {
-            products.add(new Product(id));
+        for (long productId : productsId) {
+            products.add(productDao.getProduct(productId));
         }
-        Order order = new Order(orderId, client);
         order.setProducts(products);
         boolean result = orderDao.saveOrder(order);
         if (result) {
@@ -48,20 +55,21 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void deleteOrder(long orderId) {
-        Order order = new Order(orderId);
-        boolean result = orderDao.deleteOrder(order);
+        boolean result = orderDao.deleteOrder(orderId);
         if(result) {
-            System.out.println("Order deleted: " + order);
+            System.out.println("Deleted order with id: " + orderId);
+        } else {
+            System.out.println("Can't delete order with id: " + orderId);
         }
     }
 
     @Override
     public void deleteOrder(long orderId, long clientId) {
-        Client client = new Client(clientId);
-        Order order = new Order(orderId, client);
-        boolean result = orderDao.deleteOrder(order);
+        boolean result = orderDao.deleteOrder(orderId, orderId);
         if(result) {
-            System.out.println("Order deleted: " + order);
+            System.out.println("Deleted order with id: " + orderId);
+        } else {
+            System.out.println("Can't delete order with id: " + orderId);
         }
     }
 
@@ -76,8 +84,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void showOrders(long clientId) {
-        Client client = new Client(clientId);
-        List<Order> orders = orderDao.getOrders(client);
+        List<Order> orders = orderDao.getOrders(clientId);
         System.out.println("List all orders:");
         for (Order order : orders) {
             System.out.println(order);

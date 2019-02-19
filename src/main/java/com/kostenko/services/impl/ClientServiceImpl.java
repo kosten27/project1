@@ -27,10 +27,7 @@ public class ClientServiceImpl implements ClientService {
     public long createClient(String name, String surname, int age, String email, String phone) {
 
         try {
-            validationService.validateAge(age);
-            validationService.validateEmail(email);
-            validationService.validatePhone(phone);
-            validationService.validatePhoneUsed(clientDao, phone);
+            validationService.validateClientField(age, email, phone);
             Client client = new Client(name, surname, age, email, phone);
             boolean result = clientDao.saveClient(client);
             if(result) {
@@ -47,24 +44,16 @@ public class ClientServiceImpl implements ClientService {
     public void modifyClient(long clientId, String name, String surname, int age, String email, String phone) {
 
         try {
-            validationService.validateClientExists(clientDao, clientId);
+            validationService.validateClientField(age, email);
             Client client = clientDao.getClient(clientId);
             client.setName(name);
             client.setSurname(surname);
-            if (!(client.getAge() == age)) {
-
-                validationService.validateAge(age);
-                client.setAge(age);
-            }
-            if (!client.getEmail().equals(email)) {
-
-                validationService.validateEmail(email);
-                client.setEmail(email);
-            }
+            client.setAge(age);
+            client.setEmail(email);
             if (!client.getPhone().equals(phone)) {
 
                 validationService.validatePhone(phone);
-                validationService.validatePhoneUsed(clientDao, phone);
+                validationService.validatePhoneUsed(phone);
                 client.setPhone(phone);
             }
 
@@ -79,16 +68,11 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void deleteClient(long clientId) {
-
-        try {
-            validationService.validateClientExists(clientDao, clientId);
-            Client client = new Client(clientId);
-            boolean result = clientDao.deleteClient(client);
-            if(result) {
-                System.out.println("Delete client: " + client);
-            }
-        } catch (BusinessException e) {
-            e.printStackTrace();
+        boolean result = clientDao.deleteClient(clientId);
+        if (result) {
+            System.out.println("Delete client with id: " + clientId);
+        } else {
+            System.out.println("Can't delete client with id: " + clientId);
         }
     }
 
