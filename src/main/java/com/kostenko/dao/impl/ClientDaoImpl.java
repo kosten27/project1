@@ -77,5 +77,4 @@ public class ClientDaoImpl implements ClientDao {
         }
         return clientDao;
     }
-
 }

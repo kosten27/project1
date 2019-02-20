@@ -46,20 +46,25 @@ public class ClientServiceImpl implements ClientService {
         try {
             validationService.validateClientField(age, email);
             Client client = clientDao.getClient(clientId);
-            client.setName(name);
-            client.setSurname(surname);
-            client.setAge(age);
-            client.setEmail(email);
-            if (!client.getPhone().equals(phone)) {
+            if (client != null) {
 
-                validationService.validatePhone(phone);
-                validationService.validatePhoneUsed(phone);
-                client.setPhone(phone);
-            }
+                client.setName(name);
+                client.setSurname(surname);
+                client.setAge(age);
+                client.setEmail(email);
+                if (!client.getPhone().equals(phone)) {
 
-            boolean result = clientDao.updateClient(client);
-            if (result) {
-                System.out.println("Modify client: " + client);
+                    validationService.validatePhone(phone);
+                    validationService.validatePhoneUsed(phone);
+                    client.setPhone(phone);
+                }
+
+                boolean result = clientDao.updateClient(client);
+                if (result) {
+                    System.out.println("Modify client: " + client);
+                }
+            } else {
+                System.out.println("Client wasn't find");
             }
         } catch (BusinessException e) {
             e.printStackTrace();
