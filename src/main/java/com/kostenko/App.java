@@ -3,6 +3,7 @@ package com.kostenko;
 import com.kostenko.dao.ClientDao;
 import com.kostenko.dao.OrderDao;
 import com.kostenko.dao.ProductDao;
+import com.kostenko.dao.impl.ClientDBDao;
 import com.kostenko.dao.impl.ClientDaoImpl;
 import com.kostenko.dao.impl.OrderDaoImpl;
 import com.kostenko.dao.impl.ProductDaoImpl;
@@ -23,8 +24,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class App {
+
     public static void main(String[] args) throws IOException {
-        ClientDao clientDao = ClientDaoImpl.getInstance();
+        ClientDao clientDao = new ClientDBDao();
         ProductDao productDao = new ProductDaoImpl();
         OrderDao orderDao = new OrderDaoImpl();
 
