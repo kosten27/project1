@@ -10,9 +10,9 @@ import java.util.List;
 
 public class ClientDBDao implements ClientDao{
 
-    public static final String URL = "jdbc:h2:tcp://localhost/~/LuxoftShop";
-    public static final String USER = "test";
-    public static final String PASSWORD = "test";
+    private static final String URL = "jdbc:h2:tcp://localhost/~/LuxoftShop";
+    private static final String USER = "test";
+    private static final String PASSWORD = "test";
 
     public ClientDBDao() {
         try(Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
