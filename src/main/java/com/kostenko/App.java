@@ -25,7 +25,7 @@ public class App {
     public static void main(String[] args) throws IOException {
         ClientDao clientDao = new ClientDBDao();
         ProductDao productDao = new ProductDBDao();
-        OrderDao orderDao = new OrderDaoImpl();
+        OrderDao orderDao = new OrderDBDao();
 
         ValidationService validationService = new ValidationServiceImpl(clientDao);
         ClientService clientService = new ClientServiceImpl(clientDao, validationService);
