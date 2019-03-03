@@ -62,6 +62,8 @@ public class ClientServiceImpl implements ClientService {
                 boolean result = clientDao.updateClient(client);
                 if (result) {
                     System.out.println("Modify client: " + client);
+                } else {
+                    System.out.println("Client wasn't modify");
                 }
             } else {
                 System.out.println("Client wasn't find");
