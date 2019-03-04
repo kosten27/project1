@@ -34,14 +34,8 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public boolean deleteOrder(long clientId, long orderId) {
-        System.out.println("Deleting order.... Please wait");
-        if (map.containsKey(orderId) && map.get(orderId).getClient().getId() == clientId) {
-            map.remove(orderId);
-            return true;
-        } else {
-            return false;
-        }
+    public boolean updateOrder(Order order) {
+        return false;
     }
 
     @Override

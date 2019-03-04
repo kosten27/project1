@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
             products.add(productDao.getProduct(productId));
         }
         order.setProducts(products);
-        boolean result = orderDao.saveOrder(order);
+        boolean result = orderDao.updateOrder(order);
         if (result) {
             System.out.println("Order modified: " + order);
         }
@@ -56,16 +56,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteOrder(long orderId) {
         boolean result = orderDao.deleteOrder(orderId);
-        if(result) {
-            System.out.println("Deleted order with id: " + orderId);
-        } else {
-            System.out.println("Can't delete order with id: " + orderId);
-        }
-    }
-
-    @Override
-    public void deleteOrder(long orderId, long clientId) {
-        boolean result = orderDao.deleteOrder(orderId, orderId);
         if(result) {
             System.out.println("Deleted order with id: " + orderId);
         } else {

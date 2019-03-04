@@ -25,6 +25,12 @@ public class Order {
         this.client = client;
     }
 
+    public Order(long id, Client client, List<Product> products) {
+        this.id = id;
+        this.client = client;
+        this.products = products;
+    }
+
     public void setId(long id) {
         this.id = id;
     }

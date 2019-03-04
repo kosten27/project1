@@ -16,8 +16,6 @@ public interface OrderService {
 
     void deleteOrder(long orderId);
 
-    void deleteOrder(long orderId, long clientId);
-
     void showOrders();
 
     void showOrders(long clientId);

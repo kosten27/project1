@@ -17,7 +17,7 @@ public interface OrderDao {
 
     boolean deleteOrder(long orderId);
 
-    boolean deleteOrder(long clientId, long orderId);
+    boolean updateOrder(Order order);
 
     Order getOrder(long orderId);
 
