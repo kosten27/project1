@@ -4,14 +4,13 @@ public class Client {
     private long id;
     private String name;
     private String surname;
+    private int age;
+    private String email;
+    private String phone;
 
     public Client(long id) {
         this.id = id;
     }
-
-    private int age;
-    private String email;
-    private String phone;
 
     public Client(long id, String name, String surname, int age, String email, String phone) {
         this.id = id;

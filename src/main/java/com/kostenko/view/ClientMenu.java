@@ -33,8 +33,10 @@ public class ClientMenu {
             System.out.println("2. Register");
             switch (br.readLine()) {
                 case "1":
-                    authorize();
-                    isRuning = false;
+                    if (authorize()) {
+
+                        isRuning = false;
+                    }
                     break;
                 case "2":
                     register();
@@ -74,9 +76,16 @@ public class ClientMenu {
         }
     }
 
-    private void authorize() throws IOException {
+    private boolean authorize() throws IOException {
         System.out.println("Input client id for authorization:");
         clientId = Long.valueOf(br.readLine());
+        if (clientService.clientFound(clientId)) {
+            return true;
+        } else {
+            System.out.println("Client wasn't found");
+            return false;
+        }
+
     }
 
     private void showProducts() {
@@ -134,7 +143,13 @@ public class ClientMenu {
             switch (br.readLine()) {
                 case "1":
                     System.out.println("Input product id:");
-                    productsId.add(Long.valueOf(br.readLine()));
+                    long productId = Long.valueOf(br.readLine());
+                    if (productService.productFound(productId)) {
+
+                        productsId.add(productId);
+                    } else {
+                        System.out.println("Product wasn't found");
+                    }
                     break;
                 case "2":
                     orderService.createOrder(clientId, productsId);

@@ -41,6 +41,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public boolean clientFound(long clientId) {
+        return clientDao.clientFound(clientId);
+    }
+
+    @Override
     public void modifyClient(long clientId, String name, String surname, int age, String email, String phone) {
 
         try {

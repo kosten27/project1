@@ -12,7 +12,9 @@ public interface OrderService {
 
     void createOrder(long clientId, List<Long> productsId);
 
-    void modifyOrder(long orderId, long clientId, List<Long> productsId);
+    boolean orderFound(long orderId);
+
+    void modifyOrder(long orderId, List<Long> productsId);
 
     void deleteOrder(long orderId);
 

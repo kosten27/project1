@@ -22,6 +22,11 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
+    public boolean productFound(long productId) {
+        return false;
+    }
+
+    @Override
     public boolean updateProduct(Product product) {
         System.out.println("Updating product.... Please wait");
         map.put(product.getId(), product);

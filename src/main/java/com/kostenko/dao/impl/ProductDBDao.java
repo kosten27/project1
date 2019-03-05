@@ -15,8 +15,8 @@ public class ProductDBDao implements ProductDao {
     private final String PASSWORD = "test";
 
     public ProductDBDao() {
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            Statement statement = connection.createStatement()) {
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement()) {
             DatabaseMetaData metaData = connection.getMetaData();
             ResultSet tables = metaData.getTables(null, null, "PRODUCT", null);
             if (!tables.next()) {
@@ -31,7 +31,7 @@ public class ProductDBDao implements ProductDao {
     @Override
     public boolean saveProduct(Product product) {
         String sql = "INSERT INTO PRODUCT(NAME,PRICE) VALUES(?,?)";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, product.getName());
             statement.setBigDecimal(2, product.getPrice());
@@ -50,9 +50,29 @@ public class ProductDBDao implements ProductDao {
     }
 
     @Override
+    public boolean productFound(long productId) {
+        boolean result = false;
+        String sql = "SELECT * FROM PRODUCT WHERE ID=?";
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, productId);
+            ResultSet resultSet = statement.executeQuery();
+            result = resultSet.next();
+            resultSet.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+
+    @Override
     public boolean updateProduct(Product product) {
         String sql = "UPDATE PRODUCT SET NAME=?, PRICE=? WHERE ID=?";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, product.getName());
             statement.setBigDecimal(2, product.getPrice());
@@ -67,7 +87,7 @@ public class ProductDBDao implements ProductDao {
     @Override
     public boolean deleteProduct(long productId) {
         String sql = "DELETE FROM PRODUCT WHERE ID=?";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, productId);
             return (statement.executeUpdate() > 0);
@@ -80,7 +100,7 @@ public class ProductDBDao implements ProductDao {
     @Override
     public Product getProduct(long id) {
         String sql = "SELECT * FROM PRODUCT WHERE ID=?";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -102,8 +122,8 @@ public class ProductDBDao implements ProductDao {
     @Override
     public List<Product> getProducts() {
         List<Product> products = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            Statement statement = connection.createStatement()) {
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement()) {
             String sql = "SELECT * FROM PRODUCT";
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {

@@ -38,10 +38,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void modifyOrder(long orderId, long clientId, List<Long> productsId) {
+    public boolean orderFound(long orderId) {
+        return orderDao.orderFound(orderId);
+    }
+
+    @Override
+    public void modifyOrder(long orderId, List<Long> productsId) {
         Order order = orderDao.getOrder(orderId);
-        Client client = clientDao.getClient(clientId);
-        order.setClient(client);
         List<Product> products = new ArrayList<>();
         for (long productId : productsId) {
             products.add(productDao.getProduct(productId));

@@ -85,28 +85,35 @@ public class AdminMenu {
     }
 
     private void modifyOrder() throws IOException {
-        boolean isRuning = false;
+        boolean isRuning = true;
         System.out.println("Input order id:");
         long orderId = Long.valueOf(br.readLine());
-        System.out.println("Input id of new client:");
-        long clientId = Long.valueOf(br.readLine());
-        ArrayList<Long> productsId = new ArrayList<>();
-        while (isRuning) {
+        if (orderService.orderFound(orderId)) {
+            ArrayList<Long> productsId = new ArrayList<>();
+            while (isRuning) {
+                System.out.println("1. Add product");
+                System.out.println("2. Save order");
+                switch (br.readLine()) {
+                    case "1":
+                        System.out.println("Input product id:");
+                        long productId = Long.valueOf(br.readLine());
+                        if (productService.productFound(productId)) {
 
-            System.out.println("1. Add product");
-            System.out.println("2. Save order");
-            switch (br.readLine()) {
-                case "1":
-                    System.out.println("Input product id:");
-                    productsId.add(Long.valueOf(br.readLine()));
-                    break;
-                case "2":
-                    orderService.createOrder(clientId, productsId);
-                    isRuning = false;
-                    break;
-                default:
-                    System.out.println("Wrong input");
+                            productsId.add(productId);
+                        } else {
+                            System.out.println("Product wasn't found");
+                        }
+                        break;
+                    case "2":
+                        orderService.modifyOrder(orderId, productsId);
+                        isRuning = false;
+                        break;
+                    default:
+                        System.out.println("Wrong input");
+                }
             }
+        } else {
+            System.out.println("Order wasn't found");
         }
     }
 
@@ -129,11 +136,15 @@ public class AdminMenu {
     private void modifyProduct() throws IOException {
         System.out.println("Input id:");
         long id = Long.valueOf(br.readLine());
-        System.out.println("Input new name:");
-        String newName = br.readLine();
-        System.out.println("Input new price:");
-        BigDecimal newPrice = new BigDecimal(br.readLine());
-        productService.modifyProduct(id, newName, newPrice);
+        if (productService.productFound(id)) {
+            System.out.println("Input new name:");
+            String newName = br.readLine();
+            System.out.println("Input new price:");
+            BigDecimal newPrice = new BigDecimal(br.readLine());
+            productService.modifyProduct(id, newName, newPrice);
+        } else {
+            System.out.println("Product wasn't found");
+        }
     }
 
     private void createProduct() throws IOException {
@@ -153,17 +164,21 @@ public class AdminMenu {
     private void modifyClient() throws IOException {
         System.out.println("Input id:");
         long clientId = Long.valueOf(br.readLine());
-        System.out.println("Input new name:");
-        String name = br.readLine();
-        System.out.println("Input new surname:");
-        String surname = br.readLine();
-        System.out.println("Input new age:");
-        int age = readInteger();
-        System.out.println("Input new email:");
-        String email = br.readLine();
-        System.out.println("Input new phone:");
-        String phone = br.readLine();
-        clientService.modifyClient(clientId, name, surname, age, email, phone);
+        if (clientService.clientFound(clientId)) {
+            System.out.println("Input new name:");
+            String name = br.readLine();
+            System.out.println("Input new surname:");
+            String surname = br.readLine();
+            System.out.println("Input new age:");
+            int age = readInteger();
+            System.out.println("Input new email:");
+            String email = br.readLine();
+            System.out.println("Input new phone:");
+            String phone = br.readLine();
+            clientService.modifyClient(clientId, name, surname, age, email, phone);
+        } else {
+            System.out.println("Client not fount");
+        }
     }
 
     private void createClient() throws IOException {

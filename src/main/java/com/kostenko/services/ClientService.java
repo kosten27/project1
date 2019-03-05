@@ -16,6 +16,8 @@ public interface ClientService {
 
     long createClient(String name, String surname, int age, String email, String phone);
 
+    boolean clientFound(long clientId);
+
     void modifyClient(long clientId, String name, String surname, int age, String email, String phone);
 
     void deleteClient(long clientId);

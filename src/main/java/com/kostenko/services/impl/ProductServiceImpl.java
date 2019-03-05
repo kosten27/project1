@@ -25,6 +25,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public boolean productFound(long id) {
+        return productDao.productFound(id);
+    }
+
+    @Override
     public void modifyProduct(long productId, String newName, BigDecimal newPrice) {
         Product product = productDao.getProduct(productId);
         product.setName(newName);

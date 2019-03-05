@@ -14,6 +14,8 @@ public interface ProductDao {
 
     boolean saveProduct(Product product);
 
+    boolean productFound(long productId);
+
     boolean updateProduct(Product product);
 
     boolean deleteProduct(long productId);

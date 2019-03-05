@@ -12,6 +12,8 @@ public interface ProductService {
 
     void createProduct(String name, BigDecimal price);
 
+    boolean productFound(long id);
+
     void modifyProduct(long id, String newName, BigDecimal price);
 
     void deleteProduct(long id);

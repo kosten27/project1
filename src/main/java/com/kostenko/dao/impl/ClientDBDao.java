@@ -15,7 +15,7 @@ public class ClientDBDao implements ClientDao{
     private static final String PASSWORD = "test";
 
     public ClientDBDao() {
-        try(Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try(Connection connection = getConnection();
             Statement statement = connection.createStatement()) {
             DatabaseMetaData metaData = connection.getMetaData();
             ResultSet resultSet = metaData.getTables(null, null, "CLIENT", null);
@@ -29,10 +29,14 @@ public class ClientDBDao implements ClientDao{
         }
     }
 
+    private Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+
     @Override
     public boolean saveClient(Client client) {
         String sql = "INSERT INTO CLIENT(NAME,SURNAME,AGE,PHONE,EMAIL) VALUES(?,?,?,?,?)";
-        try(Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try(Connection connection = getConnection();
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, client.getName());
             statement.setString(2, client.getSurname());
@@ -54,9 +58,24 @@ public class ClientDBDao implements ClientDao{
     }
 
     @Override
+    public boolean clientFound(long clientId) {
+        boolean result = false;
+        String sql = "SELECT * FROM CLIENT WHERE ID = ?";
+        try(Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, clientId);
+            ResultSet resultSet = statement.executeQuery();
+            result = resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
     public boolean updateClient(Client client) {
         String sql = "UPDATE CLIENT SET NAME=?,SURNAME=?,AGE=?,PHONE=?,EMAIL=? WHERE ID=?";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, client.getName());
             statement.setString(2, client.getSurname());
@@ -74,7 +93,7 @@ public class ClientDBDao implements ClientDao{
     @Override
     public boolean deleteClient(long clientId) {
         String sql = "DELETE FROM CLIENT WHERE ID=?";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, clientId);
             return (statement.executeUpdate() > 0);
@@ -87,7 +106,7 @@ public class ClientDBDao implements ClientDao{
     @Override
     public Client getClient(long clientId) {
         String sql = "SELECT * FROM CLIENT WHERE ID = ?";
-        try(Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try(Connection connection = getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, clientId);
             ResultSet resultSet = statement.executeQuery();
@@ -110,7 +129,7 @@ public class ClientDBDao implements ClientDao{
     @Override
     public List<Client> getAllClients() {
         List<Client> clients = new ArrayList<>();
-        try(Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try(Connection connection = getConnection();
             Statement statement = connection.createStatement()) {
             String sql = "SELECT * FROM CLIENT";
             ResultSet resultSet = statement.executeQuery(sql);
@@ -133,7 +152,7 @@ public class ClientDBDao implements ClientDao{
     @Override
     public boolean phoneUsed(String phone) {
         String sql = "SELECT ID FROM CLIENT WHERE PHONE=?";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setString(1, phone);
             ResultSet resultSet = statement.executeQuery();

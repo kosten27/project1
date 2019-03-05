@@ -23,6 +23,11 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public boolean orderFound(long orderId) {
+        return false;
+    }
+
+    @Override
     public boolean deleteOrder(long orderId) {
         System.out.println("Deleting order.... Please wait");
         if (map.containsKey(orderId)) {
