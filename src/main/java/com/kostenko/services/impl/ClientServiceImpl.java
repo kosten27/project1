@@ -19,13 +19,11 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void createClient(String name, String surname, String phone) {
-
         createClient(name, surname, 0, null, phone);
     }
 
     @Override
     public long createClient(String name, String surname, int age, String email, String phone) {
-
         try {
             validationService.validateClientField(age, email, phone);
             Client client = new Client(name, surname, age, email, phone);
