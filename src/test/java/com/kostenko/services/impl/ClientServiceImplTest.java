@@ -14,9 +14,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+//import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClientServiceImplTest {
@@ -52,25 +57,70 @@ public class ClientServiceImplTest {
     @Test
     public void findClient() {
         //GIVEN
-        long id = 0;
+        long id = 1;
         String name = "test";
         String surname = "test";
         int age = 10;
         String phone = "0502254850";
         String email = "test@gmail.com";
         Client expectedClient = new Client(id, name, surname, age, email, phone);
-        Mockito.when(clientDao.clientFound(id)).thenReturn(expectedClient.getId() == id);
-        Mockito.when(clientDao.clientFound(0)).thenReturn(expectedClient.getId() == id);
+        when(clientDao.clientFound(id)).thenReturn(expectedClient.getId() == id);
+//        Mockito.when(clientDao.clientFound(0)).thenReturn(false);
 
         //WHEN
         boolean b = clientService.clientFound(id);
 
         //THEN
-        Mockito.verify(clientDao, Mockito.times(1)).clientFound(id);
+        verify(clientDao, Mockito.times(1)).clientFound(id);
         Assert.assertTrue(b);
 
     }
 
+    @Test
+    public void modifyClientTest() {
+        //GIVEN
+        long id = 1;
+        String name = "test";
+        String surname = "test";
+        int age = 10;
+        String phone = "0502254850";
+        String email = "test@gmail.com";
+        Client client = new Client(id, name, surname, age, email, phone);
+        String newName = "new name";
+        when(clientDao.getClient(id)).thenReturn(client);
+        when(clientDao.updateClient(client)).thenReturn(true);
 
+        //WHEN
+        clientService.modifyClient(id, newName, surname, age, email, phone);
 
+        //THEN
+        verify(clientDao).getClient(id);
+        verify(clientDao).updateClient(client);
+    }
+
+    @Test
+    public void deleteClientTest() {
+        //GIVEN
+        long id = 1;
+        when(clientDao.deleteClient(id)).thenReturn(true);
+
+        //WHEN
+        clientService.deleteClient(id);
+
+        //THEN
+        verify(clientDao, Mockito.times(1)).deleteClient(id);
+    }
+
+    @Test
+    public void getAllClientsTest() {
+        //GIVEN
+        List<Client> clients = new ArrayList<>();
+        when(clientDao.getAllClients()).thenReturn(clients);
+
+        //WHEN
+        clientService.getAllClients();
+
+        //THEN
+        verify(clientDao, times(1)).getAllClients();
+    }
 }
