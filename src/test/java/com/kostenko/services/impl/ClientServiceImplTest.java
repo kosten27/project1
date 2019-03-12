@@ -28,7 +28,6 @@ public class ClientServiceImplTest {
 
     @Mock
     private ClientDao clientDao;
-//    private ClientDao clientDao = Mockito.mock(ClientDao.class);
 
     private ValidationService validationService = Mockito.mock(ValidationService.class);
 
@@ -47,11 +46,13 @@ public class ClientServiceImplTest {
         int age = 10;
         String phone = "0502254850";
         String email = "test@gmail.com";
+        when(clientDao.saveClient(any())).thenReturn(true);
 
         //WHEN
-        long clientId = clientService.createClient(name, surname, age, email, phone);
+        clientService.createClient(name, surname, age, email, phone);
 
         //THEN
+        verify(clientDao, times(1)).saveClient(any());
     }
 
     @Test
@@ -65,7 +66,6 @@ public class ClientServiceImplTest {
         String email = "test@gmail.com";
         Client expectedClient = new Client(id, name, surname, age, email, phone);
         when(clientDao.clientFound(id)).thenReturn(expectedClient.getId() == id);
-//        Mockito.when(clientDao.clientFound(0)).thenReturn(false);
 
         //WHEN
         boolean b = clientService.clientFound(id);
@@ -73,7 +73,6 @@ public class ClientServiceImplTest {
         //THEN
         verify(clientDao, Mockito.times(1)).clientFound(id);
         Assert.assertTrue(b);
-
     }
 
     @Test
