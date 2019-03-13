@@ -2,20 +2,21 @@ package com.kostenko.dao.impl;
 
 
 import com.kostenko.dao.ClientDao;
+import com.kostenko.dao.DataSourceDB;
 import com.kostenko.domain.Client;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientDBDao implements ClientDao{
 
-    private static final String URL = "jdbc:h2:tcp://localhost/~/LuxoftShop";
-    private static final String USER = "test";
-    private static final String PASSWORD = "test";
+    private DataSourceDB dataSource;
 
-    public ClientDBDao() {
-        try(Connection connection = getConnection();
+    public ClientDBDao(DataSourceDB dataSource) {
+        this.dataSource = dataSource;
+        try(Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement()) {
             DatabaseMetaData metaData = connection.getMetaData();
             ResultSet resultSet = metaData.getTables(null, null, "CLIENT", null);
@@ -29,14 +30,10 @@ public class ClientDBDao implements ClientDao{
         }
     }
 
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
-    }
-
     @Override
     public boolean saveClient(Client client) {
         String sql = "INSERT INTO CLIENT(NAME,SURNAME,AGE,PHONE,EMAIL) VALUES(?,?,?,?,?)";
-        try(Connection connection = getConnection();
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, client.getName());
             statement.setString(2, client.getSurname());
@@ -61,7 +58,7 @@ public class ClientDBDao implements ClientDao{
     public boolean clientFound(long clientId) {
         boolean result = false;
         String sql = "SELECT * FROM CLIENT WHERE ID = ?";
-        try(Connection connection = getConnection();
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, clientId);
             ResultSet resultSet = statement.executeQuery();
@@ -75,7 +72,7 @@ public class ClientDBDao implements ClientDao{
     @Override
     public boolean updateClient(Client client) {
         String sql = "UPDATE CLIENT SET NAME=?,SURNAME=?,AGE=?,PHONE=?,EMAIL=? WHERE ID=?";
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, client.getName());
             statement.setString(2, client.getSurname());
@@ -93,7 +90,7 @@ public class ClientDBDao implements ClientDao{
     @Override
     public boolean deleteClient(long clientId) {
         String sql = "DELETE FROM CLIENT WHERE ID=?";
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, clientId);
             return (statement.executeUpdate() > 0);
@@ -106,7 +103,7 @@ public class ClientDBDao implements ClientDao{
     @Override
     public Client getClient(long clientId) {
         String sql = "SELECT * FROM CLIENT WHERE ID = ?";
-        try(Connection connection = getConnection();
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, clientId);
             ResultSet resultSet = statement.executeQuery();
@@ -129,7 +126,7 @@ public class ClientDBDao implements ClientDao{
     @Override
     public List<Client> getAllClients() {
         List<Client> clients = new ArrayList<>();
-        try(Connection connection = getConnection();
+        try(Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement()) {
             String sql = "SELECT * FROM CLIENT";
             ResultSet resultSet = statement.executeQuery(sql);
@@ -152,7 +149,7 @@ public class ClientDBDao implements ClientDao{
     @Override
     public boolean phoneUsed(String phone) {
         String sql = "SELECT ID FROM CLIENT WHERE PHONE=?";
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setString(1, phone);
             ResultSet resultSet = statement.executeQuery();

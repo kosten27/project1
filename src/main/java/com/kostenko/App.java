@@ -1,6 +1,7 @@
 package com.kostenko;
 
 import com.kostenko.dao.ClientDao;
+import com.kostenko.dao.DataSourceDB;
 import com.kostenko.dao.OrderDao;
 import com.kostenko.dao.ProductDao;
 import com.kostenko.dao.impl.*;
@@ -23,9 +24,10 @@ import java.io.InputStreamReader;
 public class App {
 
     public static void main(String[] args) throws IOException {
-        ClientDao clientDao = new ClientDBDao();
-        ProductDao productDao = new ProductDBDao();
-        OrderDao orderDao = new OrderDBDao();
+        DataSourceDB dataSource = new DataSourceDB();
+        ClientDao clientDao = new ClientDBDao(dataSource);
+        ProductDao productDao = new ProductDBDao(dataSource);
+        OrderDao orderDao = new OrderDBDao(dataSource);
 
         ValidationService validationService = new ValidationServiceImpl(clientDao);
         ClientService clientService = new ClientServiceImpl(clientDao, validationService);

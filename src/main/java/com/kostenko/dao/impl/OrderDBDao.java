@@ -1,5 +1,6 @@
 package com.kostenko.dao.impl;
 
+import com.kostenko.dao.DataSourceDB;
 import com.kostenko.dao.OrderDao;
 import com.kostenko.domain.Client;
 import com.kostenko.domain.Order;
@@ -12,12 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDBDao implements OrderDao {
-    private final String URL = "jdbc:h2:tcp://localhost/~/LuxoftShop";
-    private final String USER = "test";
-    private final String PASSWORD = "test";
 
-    public OrderDBDao() {
-        try (Connection connection = getConnection();
+    private DataSourceDB dataSource;
+
+    public OrderDBDao(DataSourceDB dataSource) {
+        this.dataSource = dataSource;
+        try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             DatabaseMetaData metaData = connection.getMetaData();
             ResultSet tables = metaData.getTables(null, null, "ORDERS", null);
@@ -34,7 +35,7 @@ public class OrderDBDao implements OrderDao {
     @Override
     public boolean saveOrder(Order order) {
         String sql = "INSERT INTO ORDERS(CLIENT_ID) VALUES(?)";
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             connection.setAutoCommit(false);
             statement.setLong(1, order.getClient().getId());
@@ -54,6 +55,7 @@ public class OrderDBDao implements OrderDao {
                     }
                 }
                 connection.commit();
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -65,7 +67,7 @@ public class OrderDBDao implements OrderDao {
     public boolean orderFound(long orderId) {
         boolean result = false;
         String sql = "SELECT * FROM ORDERS WHERE ORDERS.ID=?";
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, orderId);
             ResultSet resultSet = statement.executeQuery();
@@ -81,7 +83,7 @@ public class OrderDBDao implements OrderDao {
     public boolean deleteOrder(long orderId) {
         String sqlDetail = "DELETE FROM PRODUCT_IN_ORDER WHERE ORDER_ID=?";
         String sqlOrder = "DELETE FROM ORDERS WHERE ID=?";
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statementDetail = connection.prepareStatement(sqlDetail);
              PreparedStatement statementOrder = connection.prepareStatement(sqlOrder)) {
             connection.setAutoCommit(false);
@@ -97,13 +99,9 @@ public class OrderDBDao implements OrderDao {
         return false;
     }
 
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
-    }
-
     @Override
     public boolean updateOrder(Order order) {
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statementDelete = connection.prepareStatement("DELETE FROM PRODUCT_IN_ORDER WHERE ORDER_ID=?");
              PreparedStatement statementInsert = connection.prepareStatement("INSERT INTO PRODUCT_IN_ORDER(ORDER_ID,PRODUCT_ID) VALUES(?,?)")) {
             connection.setAutoCommit(false);
@@ -127,7 +125,7 @@ public class OrderDBDao implements OrderDao {
     public Order getOrder(long orderId) {
         String sqlOrder = "SELECT CLIENT_ID, NAME, SURNAME, AGE, PHONE, EMAIL FROM ORDERS LEFT JOIN CLIENT ON ORDERS.CLIENT_ID = CLIENT.ID WHERE ORDERS.ID=?";
         String sqlDetail = "SELECT PRODUCT_IN_ORDER.PRODUCT_ID, PRODUCT.NAME, PRODUCT.PRICE FROM PRODUCT_IN_ORDER LEFT JOIN PRODUCT ON PRODUCT_IN_ORDER.PRODUCT_ID = PRODUCT.ID WHERE ORDER_ID=?";
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statementOrder = connection.prepareStatement(sqlOrder);
              PreparedStatement statementDetail = connection.prepareStatement(sqlDetail)) {
             statementOrder.setLong(1, orderId);
@@ -165,7 +163,7 @@ public class OrderDBDao implements OrderDao {
         List<Order> orders = new ArrayList<>();
         String sqlOrder = "SELECT ORDERS.ID, CLIENT_ID, NAME, SURNAME, AGE, PHONE, EMAIL FROM ORDERS LEFT JOIN CLIENT ON ORDERS.CLIENT_ID = CLIENT.ID";
         String sqlDetail = "SELECT PRODUCT_IN_ORDER.PRODUCT_ID, PRODUCT.NAME, PRODUCT.PRICE FROM PRODUCT_IN_ORDER LEFT JOIN PRODUCT ON PRODUCT_IN_ORDER.PRODUCT_ID = PRODUCT.ID WHERE ORDER_ID=?";
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statementOrder = connection.prepareStatement(sqlOrder);
              PreparedStatement statementDetail = connection.prepareStatement(sqlDetail)) {
             ResultSet resultSetOrder = statementOrder.executeQuery();
@@ -203,7 +201,7 @@ public class OrderDBDao implements OrderDao {
         List<Order> orders = new ArrayList<>();
         String sqlOrder = "SELECT ORDERS.ID, CLIENT_ID, NAME, SURNAME, AGE, PHONE, EMAIL FROM ORDERS LEFT JOIN CLIENT ON ORDERS.CLIENT_ID = CLIENT.ID WHERE ORDERS.CLIENT_ID=?";
         String sqlDetail = "SELECT PRODUCT_IN_ORDER.PRODUCT_ID, PRODUCT.NAME, PRODUCT.PRICE FROM PRODUCT_IN_ORDER LEFT JOIN PRODUCT ON PRODUCT_IN_ORDER.PRODUCT_ID = PRODUCT.ID WHERE ORDER_ID=?";
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statementOrder = connection.prepareStatement(sqlOrder);
              PreparedStatement statementDetail = connection.prepareStatement(sqlDetail)) {
             statementOrder.setLong(1, clientId);
