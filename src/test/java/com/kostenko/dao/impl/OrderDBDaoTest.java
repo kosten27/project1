@@ -127,6 +127,7 @@ public class OrderDBDaoTest {
     public void updateOrderTest() {
         //GIVEN
         Order order = getTestOrder();
+        List<Product> oldProducts = order.getProducts();
         long productId = 2;
         String productName = "Product2";
         BigDecimal productPrice = new BigDecimal(150);
@@ -147,6 +148,9 @@ public class OrderDBDaoTest {
         clientDao.deleteClient(order.getClient().getId());
         for (Product product:order.getProducts()) {
             productDao.deleteProduct(product.getId());
+        }
+        for (Product oldProduct :oldProducts) {
+            productDao.deleteProduct(oldProduct.getId());
         }
 
         //THEN

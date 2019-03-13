@@ -31,9 +31,11 @@ public class ClientServiceImpl implements ClientService {
             if(result) {
                 System.out.println("Client saved: " + client);
                 return client.getId();
+            } else {
+                System.out.println("Client not saved.");
             }
         } catch (BusinessException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return -1;
     }
@@ -50,7 +52,6 @@ public class ClientServiceImpl implements ClientService {
             validationService.validateClientField(age, email);
             Client client = clientDao.getClient(clientId);
             if (client != null) {
-
                 client.setName(name);
                 client.setSurname(surname);
                 client.setAge(age);
@@ -66,13 +67,13 @@ public class ClientServiceImpl implements ClientService {
                 if (result) {
                     System.out.println("Modify client: " + client);
                 } else {
-                    System.out.println("Client wasn't modify");
+                    System.out.println("Client wasn't modify.");
                 }
             } else {
-                System.out.println("Client wasn't find");
+                System.out.println("Client wasn't found.");
             }
         } catch (BusinessException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 

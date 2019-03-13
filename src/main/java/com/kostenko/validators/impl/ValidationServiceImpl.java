@@ -18,7 +18,7 @@ public class ValidationServiceImpl implements ValidationService{
     @Override
     public void validateAge(int age) throws BusinessException {
         if(age < 6 || age > 200) {
-            throw new BusinessException("Incorrect age");
+            throw new BusinessException("Incorrect age. Age must be more than 5 and less than 201.");
         }
     }
 
@@ -27,7 +27,7 @@ public class ValidationServiceImpl implements ValidationService{
         Pattern pattern = Pattern.compile("^(\\w+(\\.\\w+)*@[\\w-]+(\\.\\w)*(\\.\\w{2,}))$");
         Matcher matcher = pattern.matcher(email);
         if (!matcher.matches()) {
-            throw new BusinessException("Incorrect email");
+            throw new BusinessException("Incorrect email.");
         }
     }
 
@@ -36,21 +36,21 @@ public class ValidationServiceImpl implements ValidationService{
         Pattern pattern = Pattern.compile("^(0(67|97|50)\\d{7})$");
         Matcher matcher = pattern.matcher(phone);
         if (!matcher.matches()) {
-            throw new BusinessException("Incorrect phone");
+            throw new BusinessException("Incorrect phone. Phone must have 10 digits and have an operator code 067, 097 or 050.");
         }
     }
 
     @Override
     public void validatePhoneUsed(String phone) throws BusinessException {
         if (clientDao.phoneUsed(phone)) {
-            throw new BusinessException("Phone already used");
+            throw new BusinessException("Phone already used.");
         }
     }
 
     @Override
     public void validateClientExists(long clientId) throws BusinessException {
         if (clientDao.getClient(clientId) == null) {
-            throw new BusinessException("Client not found");
+            throw new BusinessException("Client not found.");
         }
     }
 

@@ -26,14 +26,27 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void createOrder(long clientId, List<Long> productsId) {
         Client client = clientDao.getClient(clientId);
-        List<Product> products = new ArrayList<>();
-        for (long productId: productsId) {
-            products.add(productDao.getProduct(productId));
-        }
-        Order order = new Order(client, products);
-        boolean result = orderDao.saveOrder(order);
-        if (result) {
-            System.out.println("Order saved: " + order);
+        if (client != null) {
+
+            List<Product> products = new ArrayList<>();
+            for (long productId: productsId) {
+                Product product = productDao.getProduct(productId);
+                if (product != null) {
+                    products.add(product);
+                } else {
+                    System.out.println("Product with id " + productId + " wasn't fount. Order not saved.");
+                    return;
+                }
+            }
+            Order order = new Order(client, products);
+            boolean result = orderDao.saveOrder(order);
+            if (result) {
+                System.out.println("Order saved: " + order);
+            } else {
+                System.out.println("Order not saved.");
+            }
+        } else {
+            System.out.println("Client wasn't found. Order not saved.");
         }
     }
 
@@ -45,14 +58,27 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void modifyOrder(long orderId, List<Long> productsId) {
         Order order = orderDao.getOrder(orderId);
-        List<Product> products = new ArrayList<>();
-        for (long productId : productsId) {
-            products.add(productDao.getProduct(productId));
-        }
-        order.setProducts(products);
-        boolean result = orderDao.updateOrder(order);
-        if (result) {
-            System.out.println("Order modified: " + order);
+        if (order != null) {
+
+            List<Product> products = new ArrayList<>();
+            for (long productId : productsId) {
+                Product product = productDao.getProduct(productId);
+                if (product != null) {
+                    products.add(product);
+                } else {
+                    System.out.println("Product with id " + productId + " wasn't fount. Order wasn't modify.");
+                    return;
+                }
+            }
+            order.setProducts(products);
+            boolean result = orderDao.updateOrder(order);
+            if (result) {
+                System.out.println("Order modified: " + order);
+            } else {
+                System.out.println("Order wasn't modify.");
+            }
+        } else {
+            System.out.println("Order wasn't found.");
         }
     }
 

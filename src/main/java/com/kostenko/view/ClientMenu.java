@@ -27,10 +27,12 @@ public class ClientMenu {
 
     public void show() throws IOException {
         boolean isRuning = true;
+        boolean needReturn = false;
         while (isRuning) {
 
             System.out.println("1. Authorize");
             System.out.println("2. Register");
+            System.out.println("R. Return");
             switch (br.readLine()) {
                 case "1":
                     if (authorize()) {
@@ -39,13 +41,22 @@ public class ClientMenu {
                     }
                     break;
                 case "2":
-                    register();
+                    if (register()) {
+
+                        isRuning = false;
+                    }
+                    break;
+                case "R":
+                    needReturn = true;
                     isRuning = false;
                     break;
                 default:
                     System.out.println("Wrong input");
                     break;
             }
+        }
+        if (needReturn) {
+            return;
         }
         isRuning = true;
         while (isRuning) {
@@ -106,7 +117,7 @@ public class ClientMenu {
         clientService.modifyClient(clientId, name, surname, age, email, phone);
     }
 
-    private void register() throws IOException {
+    private boolean register() throws IOException {
         System.out.println("Input name:");
         String name = br.readLine();
         System.out.println("Input surname:");
@@ -118,6 +129,11 @@ public class ClientMenu {
         System.out.println("Input email:");
         String email = br.readLine();
         clientId = clientService.createClient(name, surname, age, email, phone);
+        if (clientId < 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private int readInteger() {

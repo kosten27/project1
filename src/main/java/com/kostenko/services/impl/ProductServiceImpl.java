@@ -21,6 +21,8 @@ public class ProductServiceImpl implements ProductService {
         boolean result = productDao.saveProduct(product);
         if(result) {
             System.out.println("Product saved: " + product);
+        } else {
+            System.out.println("Product not saved.");
         }
     }
 
@@ -32,11 +34,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void modifyProduct(long productId, String newName, BigDecimal newPrice) {
         Product product = productDao.getProduct(productId);
-        product.setName(newName);
-        product.setPrice(newPrice);
-        boolean result = productDao.updateProduct(product);
-        if(result) {
-            System.out.println("Product modified: " + product);
+        if (product != null) {
+            product.setName(newName);
+            product.setPrice(newPrice);
+            boolean result = productDao.updateProduct(product);
+            if(result) {
+                System.out.println("Product modified: " + product);
+            } else {
+                System.out.println("Product wasn't modify.");
+            }
+        } else {
+            System.out.println("Product wasn't found.");
         }
     }
 
