@@ -109,4 +109,9 @@ public class OrderServiceImpl implements OrderService {
             System.out.println(order);
         }
     }
+
+    @Override
+    public List<Order> getOrders() {
+        return orderDao.getOrders();
+    }
 }

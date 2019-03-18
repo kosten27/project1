@@ -65,4 +65,9 @@ public class ProductServiceImpl implements ProductService {
             System.out.println(product);
         }
     }
+
+    @Override
+    public List<Product> getProducts() {
+        return productDao.getProducts();
+    }
 }

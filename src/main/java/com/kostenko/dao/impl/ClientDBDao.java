@@ -110,12 +110,12 @@ public class ClientDBDao implements ClientDao{
             if (resultSet.next()) {
                 long id = resultSet.getLong(1);
                 String name = resultSet.getString(2);
-                String sername = resultSet.getString("SURNAME");
+                String surname = resultSet.getString("SURNAME");
                 int age = resultSet.getInt("AGE");
                 String phone = resultSet.getString(5);
                 String email = resultSet.getString(6);
                 resultSet.close();
-                return new Client(id, name, sername, age, email, phone);
+                return new Client(id, name, surname, age, email, phone);
             };
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,6 +1,9 @@
 package com.kostenko.services;
 
+import com.kostenko.domain.Product;
+
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface ProductService {
 
@@ -19,5 +22,7 @@ public interface ProductService {
     void deleteProduct(long id);
 
     void showProducts();
+
+    List<Product> getProducts();
 
 }

@@ -50,7 +50,7 @@ public class ValidationServiceImpl implements ValidationService{
     @Override
     public void validateClientExists(long clientId) throws BusinessException {
         if (clientDao.getClient(clientId) == null) {
-            throw new BusinessException("Client not found.");
+            throw new BusinessException("Client with id "  + clientId + " not found.");
         }
     }
 

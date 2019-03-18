@@ -1,5 +1,7 @@
 package com.kostenko.services;
 
+import com.kostenko.domain.Order;
+
 import java.util.List;
 
 public interface OrderService {
@@ -21,4 +23,6 @@ public interface OrderService {
     void showOrders();
 
     void showOrders(long clientId);
+
+    List<Order> getOrders();
 }
