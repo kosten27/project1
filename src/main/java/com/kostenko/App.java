@@ -16,6 +16,7 @@ import com.kostenko.validators.impl.ValidationServiceImpl;
 import com.kostenko.view.AdminMenu;
 import com.kostenko.view.ClientMenu;
 import com.kostenko.view.MainMenu;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,21 +25,26 @@ import java.io.InputStreamReader;
 public class App {
 
     public static void main(String[] args) throws IOException {
-        DataSourceDB dataSource = new DataSourceDB();
-        ClientDao clientDao = new ClientDBDao(dataSource);
-        ProductDao productDao = new ProductDBDao(dataSource);
-        OrderDao orderDao = new OrderDBDao(dataSource);
+//        DataSourceDB dataSource = new DataSourceDB();
+//        ClientDao clientDao = new ClientDBDao(dataSource);
+//        ProductDao productDao = new ProductDBDao(dataSource);
+//        OrderDao orderDao = new OrderDBDao(dataSource);
+//
+//        ValidationService validationService = new ValidationServiceImpl(clientDao);
+//        ClientService clientService = new ClientServiceImpl(clientDao, validationService);
+//        ProductService productService = new ProductServiceImpl(productDao);
+//        OrderService orderService = new OrderServiceImpl(orderDao, clientDao, productDao);
+//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//
+//        AdminMenu adminMenu = new AdminMenu(br, clientService, productService, orderService);
+//        ClientMenu clientMenu = new ClientMenu(br, clientService, productService, orderService);
+//
+//        MainMenu menu = new MainMenu(br, adminMenu, clientMenu);
+//        menu.showMenu();
 
-        ValidationService validationService = new ValidationServiceImpl(clientDao);
-        ClientService clientService = new ClientServiceImpl(clientDao, validationService);
-        ProductService productService = new ProductServiceImpl(productDao);
-        OrderService orderService = new OrderServiceImpl(orderDao, clientDao, productDao);
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("app.xml");
+        MainMenu mainMenu = (MainMenu) context.getBean("mainMenu");
+        mainMenu.showMenu();
 
-        AdminMenu adminMenu = new AdminMenu(br, clientService, productService, orderService);
-        ClientMenu clientMenu = new ClientMenu(br, clientService, productService, orderService);
-
-        MainMenu menu = new MainMenu(br, adminMenu, clientMenu);
-        menu.showMenu();
     }
 }
