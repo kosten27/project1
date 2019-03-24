@@ -4,15 +4,21 @@ import com.kostenko.domain.Client;
 import com.kostenko.services.ClientService;
 import com.kostenko.services.OrderService;
 import com.kostenko.services.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+@Component()
 public class AdminMenu {
+    @Autowired
     private final BufferedReader br;
+    @Autowired
     private final ClientService clientService;
+    @Autowired
     private final OrderService orderService;
 
     private final ProductService productService;

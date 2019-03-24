@@ -4,12 +4,17 @@ import com.kostenko.domain.Client;
 import com.kostenko.exceptions.BusinessException;
 import com.kostenko.services.ClientService;
 import com.kostenko.validators.ValidationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class ClientServiceImpl implements ClientService {
 
+    @Autowired
     private ClientDao clientDao;
+    @Autowired
     private ValidationService validationService;
 
     public ClientServiceImpl(ClientDao clientDao, ValidationService validationService) {

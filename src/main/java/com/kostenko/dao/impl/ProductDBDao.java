@@ -3,6 +3,8 @@ package com.kostenko.dao.impl;
 import com.kostenko.dao.DataSourceDB;
 import com.kostenko.dao.ProductDao;
 import com.kostenko.domain.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -10,8 +12,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ProductDBDao implements ProductDao {
 
+    @Autowired
     private DataSourceDB dataSource;
 
     public ProductDBDao(DataSourceDB dataSource) {

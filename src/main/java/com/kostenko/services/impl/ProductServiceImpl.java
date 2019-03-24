@@ -4,11 +4,15 @@ import com.kostenko.dao.ProductDao;
 import com.kostenko.dao.impl.ProductDaoImpl;
 import com.kostenko.domain.Product;
 import com.kostenko.services.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Component
 public class ProductServiceImpl implements ProductService {
+    @Autowired
     private final ProductDao productDao;
 
     public ProductServiceImpl(ProductDao productDao) {

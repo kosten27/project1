@@ -5,17 +5,24 @@ import com.kostenko.services.OrderService;
 import com.kostenko.services.ProductService;
 import com.kostenko.services.impl.ClientServiceImpl;
 import com.kostenko.services.impl.OrderServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
+@Component
 public class ClientMenu {
+    @Autowired
     private final BufferedReader br;
     private long clientId;
+    @Autowired
     private final OrderService orderService;
+    @Autowired
     private final ClientService clientService;
+    @Autowired
     private final ProductService productService;
 
     public ClientMenu(BufferedReader br, ClientService clientService, ProductService productService, OrderService orderService) {

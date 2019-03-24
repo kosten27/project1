@@ -27,21 +27,21 @@ public class WebApp implements ServletContextListener{
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        DataSourceDB dataSource = new DataSourceDB();
-        ClientDao clientDao = new ClientDBDao(dataSource);
-        ProductDao productDao = new ProductDBDao(dataSource);
-        ValidationServiceImpl validationService = new ValidationServiceImpl(clientDao);
-        ClientService clientService = new ClientServiceImpl(clientDao, validationService);
-        ProductService productService = new ProductServiceImpl(productDao);
-        OrderService orderService = new OrderServiceImpl(new OrderDBDao(dataSource), clientDao, productDao);
-
-        ServletContext servletContext = sce.getServletContext();
-        servletContext.addServlet("ClientServlet", new ClientServlet(clientService)).addMapping("/clients");
-        servletContext.addServlet("ProductServlet", new ProductServlet(productService)).addMapping("/products");
-        servletContext.addServlet("OrderServlet", new OrderServlet(orderService)).addMapping("/orders");
-        servletContext.addFilter("ClientFilter", new ClientFilter(validationService)).addMappingForServletNames(null, false, "ClientServlet");
-        servletContext.addFilter("ProductFilter", new ProductFilter()).addMappingForServletNames(null, false, "ProductServlet");
-        servletContext.addFilter("OrderFilter", new OrderFilter()).addMappingForServletNames(null, false, "OrderServlet");
+//        DataSourceDB dataSource = new DataSourceDB();
+//        ClientDao clientDao = new ClientDBDao(dataSource);
+//        ProductDao productDao = new ProductDBDao(dataSource);
+//        ValidationServiceImpl validationService = new ValidationServiceImpl(clientDao);
+//        ClientService clientService = new ClientServiceImpl(clientDao, validationService);
+//        ProductService productService = new ProductServiceImpl(productDao);
+//        OrderService orderService = new OrderServiceImpl(new OrderDBDao(dataSource), clientDao, productDao);
+//
+//        ServletContext servletContext = sce.getServletContext();
+//        servletContext.addServlet("ClientServlet", new ClientServlet(clientService)).addMapping("/clients");
+//        servletContext.addServlet("ProductServlet", new ProductServlet(productService)).addMapping("/products");
+//        servletContext.addServlet("OrderServlet", new OrderServlet(orderService)).addMapping("/orders");
+//        servletContext.addFilter("ClientFilter", new ClientFilter(validationService)).addMappingForServletNames(null, false, "ClientServlet");
+//        servletContext.addFilter("ProductFilter", new ProductFilter()).addMappingForServletNames(null, false, "ProductServlet");
+//        servletContext.addFilter("OrderFilter", new OrderFilter()).addMappingForServletNames(null, false, "OrderServlet");
     }
 
     @Override

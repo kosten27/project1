@@ -4,16 +4,46 @@
 		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
+    <welcome-file-list>
+        <welcome-file>index</welcome-file>
+    </welcome-file-list>
+
     <servlet>
         <servlet-name>main</servlet-name>
-        <servlet-class>
-            org.springframework.web.servlet.DispatcherServlet
-        </servlet-class>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/</url-pattern>
+        <url-pattern>/index.html</url-pattern>
     </servlet-mapping>
+
+    <filter>
+        <filter-name>ClientFilter</filter-name>
+        <filter-class>com.kostenko.controllers.filters.ClientFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ClientFilter</filter-name>
+        <url-pattern>/clients</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>ProductFilter</filter-name>
+        <filter-class>com.kostenko.controllers.filters.ProductFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ProductFilter</filter-name>
+        <url-pattern>/products</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>OrderFilter</filter-name>
+        <filter-class>com.kostenko.controllers.filters.OrderFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>OrderFilter</filter-name>
+        <url-pattern>/orders</url-pattern>
+    </filter-mapping>
 
 </web-app>

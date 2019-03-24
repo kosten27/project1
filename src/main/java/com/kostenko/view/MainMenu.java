@@ -1,14 +1,21 @@
 package com.kostenko.view;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+@Component
 public class MainMenu {
 
+    @Autowired
     private final BufferedReader br;
+    @Autowired
     private final AdminMenu adminMenu;
+    @Autowired
     private final ClientMenu clientMenu;
 
     public MainMenu(BufferedReader br, AdminMenu adminMenu, ClientMenu clientMenu) {

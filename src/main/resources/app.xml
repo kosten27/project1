@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/util
-        http://www.springframework.org/schema/util/spring-util.xsd">
+        http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <context:annotation-config/>
+    <context:component-scan base-package="com.kostenko"/>
 
     <util:constant id="in" static-field="java.lang.System.in"/>
 
@@ -16,59 +21,6 @@
 
     <bean id="br" class="java.io.BufferedReader">
         <constructor-arg name="in" ref="inputStreamReader"/>
-    </bean>
-
-    <bean id="dataSource" class="com.kostenko.dao.DataSourceDB"/>
-
-    <bean id="clientDao" class="com.kostenko.dao.impl.ClientDBDao">
-        <constructor-arg name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="productDao" class="com.kostenko.dao.impl.ProductDBDao">
-        <constructor-arg name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="orderDao" class="com.kostenko.dao.impl.OrderDBDao">
-        <constructor-arg name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="validationService" class="com.kostenko.validators.impl.ValidationServiceImpl">
-        <constructor-arg name="clientDao" ref="clientDao"/>
-    </bean>
-
-    <bean id="clientService" class="com.kostenko.services.impl.ClientServiceImpl">
-        <constructor-arg name="clientDao" ref="clientDao"/>
-        <constructor-arg name="validationService" ref="validationService"/>
-    </bean>
-
-    <bean id="productService" class="com.kostenko.services.impl.ProductServiceImpl">
-        <constructor-arg name="productDao" ref="productDao"/>
-    </bean>
-
-    <bean id="orderService" class="com.kostenko.services.impl.OrderServiceImpl">
-        <constructor-arg name="orderDao" ref="orderDao"/>
-        <constructor-arg name="clientDao" ref="clientDao"/>
-        <constructor-arg name="productDao" ref="productDao"/>
-    </bean>
-
-    <bean id="adminMenu" class="com.kostenko.view.AdminMenu">
-        <constructor-arg name="br" ref="br"/>
-        <constructor-arg name="clientService" ref="clientService"/>
-        <constructor-arg name="productService" ref="productService"/>
-        <constructor-arg name="orderService" ref="orderService"/>
-    </bean>
-
-    <bean id="clientMenu" class="com.kostenko.view.ClientMenu">
-        <constructor-arg name="br" ref="br"/>
-        <constructor-arg name="clientService" ref="clientService"/>
-        <constructor-arg name="productService" ref="productService"/>
-        <constructor-arg name="orderService" ref="orderService"/>
-    </bean>
-
-    <bean id="mainMenu" class="com.kostenko.view.MainMenu">
-        <constructor-arg name="br" ref="br"/>
-        <constructor-arg name="adminMenu" ref="adminMenu"/>
-        <constructor-arg name="clientMenu" ref="clientMenu"/>
     </bean>
 
 </beans>

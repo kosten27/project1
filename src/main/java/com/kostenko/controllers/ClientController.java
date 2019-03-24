@@ -1,32 +1,66 @@
 package com.kostenko.controllers;
 
-import com.kostenko.dao.DataSourceDB;
-import com.kostenko.dao.impl.ClientDBDao;
+import com.kostenko.domain.Client;
 import com.kostenko.services.ClientService;
-import com.kostenko.services.impl.ClientServiceImpl;
-import com.kostenko.validators.impl.ValidationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/clients2")
-public class ClientController {
-//    public static final ClientDBDao CLIENT_DAO = new ClientDBDao(new DataSourceDB());
-    @Autowired
-//    private ClientService clientService = new ClientServiceImpl(CLIENT_DAO, new ValidationServiceImpl(CLIENT_DAO));
-    private ClientService clientService;
+import java.util.ArrayList;
+import java.util.List;
 
-    @GetMapping()
+@Controller
+public class ClientController {
+@Autowired
+private ClientService clientService;
+
+    @GetMapping("/clients")
     public String showClients(ModelMap modelMap){
-        System.out.println("showClients");
-        modelMap.put("message", clientService.getAllClients());
-        return "clients";
+        List<String> clients = new ArrayList<>();
+        for (Client client : clientService.getAllClients()) {
+            clients.add(client.toString());
+        }
+        modelMap.put("clients", clients);
+        return "clients/clients";
     }
 
-    @PostMapping()
-    public void postClient(@RequestParam String name, @RequestParam String surname, @RequestParam String phone) {
-        clientService.createClient(name, surname, phone);
+    @PostMapping("/clients")
+    public String postClient(ModelMap modelMap, @RequestParam(required = false) String method, @RequestParam(required = false) Long clientId, @RequestParam(required = false) String name, @RequestParam(required = false) String surname, @RequestParam(required = false) Integer age, @RequestParam(required = false) String email, @RequestParam(required = false) String phone) {
+        if ("delete".equals(method)) {
+            return deleteClient(modelMap, clientId);
+        } else if ("put".equals(method)) {
+            return putClient(modelMap, clientId, name, surname, age, email, phone);
+        }
+
+        clientService.createClient(name, surname, age, email, phone);
+        return showClients(modelMap);
+    }
+
+    @PutMapping("/clients")
+    public String putClient(ModelMap modelMap, @RequestParam long clientId, @RequestParam String name, @RequestParam String surname, @RequestParam int age, @RequestParam String email, @RequestParam String phone) {
+        clientService.modifyClient(clientId, name, surname, age, email, phone);
+        return showClients(modelMap);
+    }
+
+    @DeleteMapping("/clients")
+    public String deleteClient(ModelMap modelMap, @RequestParam long clientId) {
+        clientService.deleteClient(clientId);
+        return showClients(modelMap);
+    }
+
+    @GetMapping("/clients/addClient")
+    public String mappingAddClient(ModelMap modelMap) {
+        return "clients/addClient";
+    }
+
+    @GetMapping("/clients/modifyClient")
+    public String mappingModifyClient(ModelMap modelMap) {
+        return "clients/modifyClient";
+    }
+
+    @GetMapping("/clients/deleteClient")
+    public String mappingDeleteClient(ModelMap modelMap) {
+        return "clients/deleteClient";
     }
 }

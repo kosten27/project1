@@ -6,14 +6,18 @@ import com.kostenko.domain.Client;
 import com.kostenko.domain.Order;
 import com.kostenko.domain.Product;
 import com.sun.corba.se.impl.resolver.ORBDefaultInitRefResolverImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class OrderDBDao implements OrderDao {
 
+    @Autowired
     private DataSourceDB dataSource;
 
     public OrderDBDao(DataSourceDB dataSource) {

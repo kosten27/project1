@@ -8,13 +8,19 @@ import com.kostenko.domain.Client;
 import com.kostenko.domain.Order;
 import com.kostenko.domain.Product;
 import com.kostenko.services.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class OrderServiceImpl implements OrderService {
+    @Autowired
     private final OrderDao orderDao;
+    @Autowired
     private final ClientDao clientDao;
+    @Autowired
     private final ProductDao productDao;
 
     public OrderServiceImpl(OrderDao orderDao, ClientDao clientDao, ProductDao productDao) {

@@ -4,11 +4,15 @@ package com.kostenko.validators.impl;
 import com.kostenko.dao.ClientDao;
 import com.kostenko.exceptions.BusinessException;
 import com.kostenko.validators.ValidationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public class ValidationServiceImpl implements ValidationService{
+    @Autowired
     private final ClientDao clientDao;
 
     public ValidationServiceImpl(ClientDao clientDao) {

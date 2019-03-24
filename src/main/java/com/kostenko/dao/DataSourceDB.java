@@ -1,10 +1,14 @@
 package com.kostenko.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+@Component
 public class DataSourceDB {
 
     private static final String DEFAULT_URL = "jdbc:h2:tcp://localhost/~/LuxoftShop";

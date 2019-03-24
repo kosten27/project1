@@ -16,6 +16,8 @@ import com.kostenko.validators.impl.ValidationServiceImpl;
 import com.kostenko.view.AdminMenu;
 import com.kostenko.view.ClientMenu;
 import com.kostenko.view.MainMenu;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContextExtensionsKt;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.BufferedReader;
@@ -43,8 +45,9 @@ public class App {
 //        menu.showMenu();
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("app.xml");
-        MainMenu mainMenu = (MainMenu) context.getBean("mainMenu");
+//        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext("com.kostenko");
+        MainMenu mainMenu = (MainMenu) context.getBean(MainMenu.class);
         mainMenu.showMenu();
-
+        context.close();
     }
 }

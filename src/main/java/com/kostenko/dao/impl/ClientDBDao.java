@@ -4,14 +4,18 @@ package com.kostenko.dao.impl;
 import com.kostenko.dao.ClientDao;
 import com.kostenko.dao.DataSourceDB;
 import com.kostenko.domain.Client;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ClientDBDao implements ClientDao{
 
+    @Autowired
     private DataSourceDB dataSource;
 
     public ClientDBDao(DataSourceDB dataSource) {
