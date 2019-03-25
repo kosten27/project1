@@ -1,12 +1,27 @@
 package com.kostenko.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "CLIENT")
 public class Client {
+    @Id
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "icnrement", strategy = "increment")
     private long id;
+
+    @Column(name = "NAME")
     private String name;
     private String surname;
     private int age;
     private String email;
     private String phone;
+
+    public Client() {
+        // For Hibernate
+    }
 
     public Client(long id) {
         this.id = id;

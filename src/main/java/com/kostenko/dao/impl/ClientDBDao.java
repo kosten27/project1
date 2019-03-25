@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+//@Component
 public class ClientDBDao implements ClientDao{
 
     @Autowired
