@@ -21,13 +21,15 @@ public class ClientFilter implements Filter {
 
     public static final String MESSAGE_PAGE = "message";
     public static final String MESSAGE_ATTRIBUTE = "message";
+
+    @Autowired
     private ValidationService validationService;
 
-    public ClientFilter() {
-        DataSourceDB dataSource = new DataSourceDB();
-        ClientDao clientDao = new ClientDBDao(dataSource);
-        this.validationService = new ValidationServiceImpl(clientDao);
-    }
+//    public ClientFilter() {
+//        DataSourceDB dataSource = new DataSourceDB();
+//        ClientDao clientDao = new ClientDBDao(dataSource);
+//        this.validationService = new ValidationServiceImpl(clientDao);
+//    }
 //
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

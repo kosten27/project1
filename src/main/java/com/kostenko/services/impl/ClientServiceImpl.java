@@ -5,14 +5,17 @@ import com.kostenko.exceptions.BusinessException;
 import com.kostenko.services.ClientService;
 import com.kostenko.validators.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Component
 public class ClientServiceImpl implements ClientService {
 
     @Autowired
+//    @Qualifier(value = "clientEMDao")
     private ClientDao clientDao;
     @Autowired
     private ValidationService validationService;
