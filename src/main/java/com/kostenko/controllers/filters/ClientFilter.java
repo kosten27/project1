@@ -1,17 +1,10 @@
 package com.kostenko.controllers.filters;
 
 import com.kostenko.dao.ClientDao;
-import com.kostenko.dao.DataSourceDB;
-import com.kostenko.dao.impl.ClientDBDao;
-import com.kostenko.dao.impl.ClientDaoImpl;
+import com.kostenko.dao.impl.ClientEMDao;
 import com.kostenko.exceptions.BusinessException;
 import com.kostenko.validators.ValidationService;
 import com.kostenko.validators.impl.ValidationServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -22,15 +15,13 @@ public class ClientFilter implements Filter {
     public static final String MESSAGE_PAGE = "message";
     public static final String MESSAGE_ATTRIBUTE = "message";
 
-    @Autowired
     private ValidationService validationService;
 
-//    public ClientFilter() {
-//        DataSourceDB dataSource = new DataSourceDB();
-//        ClientDao clientDao = new ClientDBDao(dataSource);
-//        this.validationService = new ValidationServiceImpl(clientDao);
-//    }
-//
+    public ClientFilter() {
+        ClientDao clientDao = new ClientEMDao();
+        this.validationService = new ValidationServiceImpl(clientDao);
+    }
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }

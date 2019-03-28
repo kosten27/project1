@@ -1,11 +1,22 @@
 package com.kostenko.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "PRODUCT")
 public class Product {
+    @Id
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "icnrement", strategy = "increment")
     private long id;
     private String name;
     private BigDecimal price;
+
+    public Product() {
+    }
 
     public Product(long id) {
         this.id = id;

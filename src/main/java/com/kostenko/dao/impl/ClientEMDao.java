@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -30,34 +31,42 @@ public class ClientEMDao implements ClientDao {
 
     @Override
     public boolean clientFound(long clientId) {
-        return false;
+        Client client = entityManager.find(Client.class, clientId);
+        return client != null;
     }
 
     @Override
     public boolean updateClient(Client client) {
-        return false;
+        entityManager.getTransaction().begin();
+        entityManager.merge(client);
+        entityManager.getTransaction().commit();
+        return true;
     }
 
     @Override
     public boolean deleteClient(long clientId) {
-        return false;
+        entityManager.getTransaction().begin();
+        Query query = entityManager.createQuery("DELETE FROM Client c WHERE c.id = :id");
+        int deletedCount = query.setParameter("id", clientId).executeUpdate();
+        entityManager.getTransaction().commit();
+        return deletedCount > 0;
     }
 
     @Override
     public Client getClient(long clientId) {
-        return null;
+        return entityManager.find(Client.class, clientId);
     }
 
     @Override
     public List<Client> getAllClients() {
-        entityManager.getTransaction().begin();
         List<Client> resultList = entityManager.createQuery("from Client", Client.class).getResultList();
-        entityManager.getTransaction().commit();
         return resultList;
     }
 
     @Override
     public boolean phoneUsed(String phone) {
-        return false;
+        Query query = entityManager.createQuery("SELECT c FROM Client c WHERE c.phone = :phone");
+        List resultList = query.setParameter("phone", phone).getResultList();
+        return resultList.size() > 0;
     }
 }

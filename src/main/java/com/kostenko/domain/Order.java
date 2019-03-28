@@ -1,11 +1,28 @@
 package com.kostenko.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "ORDERS")
 public class Order {
+    @Id
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "icnrement", strategy = "increment")
     private long id;
+    @ManyToOne
+    @JoinColumn(name = "CLIENT_ID")
     private Client client;
+    @ManyToMany
+    @JoinTable(name = "PRODUCT_IN_ORDER",
+            joinColumns = @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID"))
     List<Product> products;
+
+    public Order() {
+    }
 
     @Override
     public String toString() {

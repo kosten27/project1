@@ -5,6 +5,8 @@
     <persistence-unit name="persistence-unit">
 
         <class>com.kostenko.domain.Client</class>
+        <class>com.kostenko.domain.Product</class>
+        <class>com.kostenko.domain.Order</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
